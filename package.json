@@ -1,6 +1,7 @@
 {
-  "name": "ble-beacon-data-mining-front",
+  "name": "BLE-beacon-data-mining-front",
   "version": "0.1.0",
+  "author": "Samuel Martín Morales alu0101359526@ull.edu.es",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
