@@ -1,3 +1,10 @@
+# Ble-beacon-data-mining-front 📱
+This repository contains the implementation of the backend of the TFG called `BLE beacon data mining`. This TFG consists in the implementation of a fullstack software that allows to display the representation of the tracking of some drones implemented before this TFG.
+
+Author: Samuel Martín Morales\
+Title: BLE beacon data mining\
+Date: 2024
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
