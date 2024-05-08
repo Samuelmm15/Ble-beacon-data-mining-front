@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useTrackerData from "./hooks/useTrackerData";
+import NavBar from "./components/NavBar";
 
 const Home = () => {
   const { getTracker } = useTrackerData();
@@ -14,6 +15,7 @@ const Home = () => {
 
   return (
     <div>
+      <NavBar />
       <h1>Example Home Page</h1>
     </div>
   );
