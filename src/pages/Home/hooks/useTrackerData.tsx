@@ -3,7 +3,7 @@ import React from "react";
 const useTrackerData = () => {
 
   async function getTracker() {
-    const res = await fetch("http://localhost:3000/api/trackerData/", {
+    const res = await fetch("https://localhost:3000/api/trackerData/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
