@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
+import LogIn from "./pages/LogIn/inex";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
           <Route path="/about" element={<h1>About</h1>} />
           <Route path="/map" element={<Map />} />
           <Route path="/dataBase" element={<h1>Data Base</h1>} />
+          <Route path="/login" element={<LogIn />} />
         </Routes>
       </BrowserRouter>
     </div>
