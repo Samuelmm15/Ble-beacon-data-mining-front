@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
 import LogIn from "./pages/LogIn/inex";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/dataBase" element={<h1>Data Base</h1>} />
           <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </div>
