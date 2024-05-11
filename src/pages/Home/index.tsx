@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useTrackerData from "./hooks/useTrackerData";
-import NavBar from "./components/NavBar";
+import NavBar from "../../components/NavBar";
 
 const Home = () => {
   // const { getTracker } = useTrackerData();

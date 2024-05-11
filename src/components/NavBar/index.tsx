@@ -1,6 +1,6 @@
 const NavBar = () => {
   const logo =
-    require("../../../../img/real-time-tracking-logo-circular.png") as string;
+    require("../../img/real-time-tracking-logo-circular.png") as string;
 
   return (
     <nav className="bg-navbar-color bg-opacity-59 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
