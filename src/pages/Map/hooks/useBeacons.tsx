@@ -1,0 +1,23 @@
+import React from "react";
+
+const useBeacons = () => {
+  async function getBeacons() {
+    const response = await fetch("https://localhost:3000/api/beacon", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching beacons data");
+    }
+  }
+
+  return { getBeacons };
+};
+
+export default useBeacons;
