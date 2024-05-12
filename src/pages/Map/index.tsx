@@ -2,8 +2,18 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import NavBar from "src/components/NavBar";
+import { useEffect, useState } from "react";
 
 const Map = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const position: LatLngTuple = [51.505, -0.09]; // Coordenadas de posición inicial
 
   return (
@@ -16,7 +26,7 @@ const Map = () => {
         height: "100vh",
       }}
     >
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <div style={{ width: "70%", height: "70%" }}>
         <MapContainer
           center={position}

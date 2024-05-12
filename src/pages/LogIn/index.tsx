@@ -16,6 +16,7 @@ const LogIn = () => {
     getLogin(email, password)
       .then((data) => {
         alert(data.message);
+        localStorage.setItem("token", data.token);
         navigate("/home");
       })
       .catch((error) => {

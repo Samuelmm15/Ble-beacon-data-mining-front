@@ -18,21 +18,7 @@ const useUser = () => {
     }
   }
 
-  async function verifyToken() {
-    const response = await fetch("https://localhost:3000/api/user/verify-token", {
-      method: "POST",
-      credentials: 'include', // incluir cookies en la solicitud
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return data.valid;
-    } else {
-      throw new Error("Error verifying token");
-    }
-  }
-
-  return { getLogin, verifyToken };
+  return { getLogin };
 };
 
 export default useUser;

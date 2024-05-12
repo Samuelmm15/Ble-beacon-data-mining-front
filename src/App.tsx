@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Map from "./pages/Map";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
+import { useEffect, useState } from "react";
 
 function App() {
   return (
