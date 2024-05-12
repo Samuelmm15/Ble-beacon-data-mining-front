@@ -1,10 +1,12 @@
 import React, { useState, FormEvent } from "react";
 import useUser from "./hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const logo =
     require("../../img/real-time-tracking-logo-circular.png") as string;
   const { getLogin } = useUser();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -13,7 +15,8 @@ const LogIn = () => {
     event.preventDefault();
     getLogin(email, password)
       .then((data) => {
-        console.log(data);
+        alert(data.message);
+        navigate("/home");
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);

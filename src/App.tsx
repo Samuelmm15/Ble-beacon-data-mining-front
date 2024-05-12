@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
-import LogIn from "./pages/LogIn/inex";
+import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/about" element={<h1>About</h1>} />
           <Route path="/map" element={<Map />} />
           <Route path="/dataBase" element={<h1>Data Base</h1>} />
