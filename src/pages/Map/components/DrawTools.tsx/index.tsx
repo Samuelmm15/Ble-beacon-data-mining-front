@@ -9,21 +9,27 @@ const DrawTools = () => {
       <EditControl
         position="topright"
         draw={{
-          polyline: {
-            icon: new L.DivIcon({
-              iconSize: new L.Point(8, 8),
-              className: "leaflet-div-icon leaflet-editing-icon",
-            }),
+          polyline: false,
+          rectangle: {
             shapeOptions: {
-              guidelineDistance: 10,
               color: "red",
               weight: 3,
             },
           },
-          rectangle: true, // Habilita la opción de dibujo de rectángulos
           circlemarker: false,
-          circle: true, // Habilita la opción de dibujo de círculos
-          polygon: true, // Habilita la opción de dibujo de polígonos
+          circle: {
+            shapeOptions: {
+              color: "red",
+              weight: 3,
+            },
+          },
+          polygon: {
+            shapeOptions: {
+              color: "red",
+              weight: 3,
+            },
+          },
+          marker: false,
         }}
       />
     </FeatureGroup>

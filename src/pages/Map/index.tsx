@@ -9,6 +9,7 @@ import iconoPeaton from "../../img/hombre-peatonal.png";
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools.tsx";
+import moment from "moment";
 
 interface Beacon {
   beaconId: number;
@@ -36,7 +37,6 @@ const Map = () => {
 
     getBeacons()
       .then((data) => {
-        console.log(data);
         setAllBeacons(data);
       })
       .catch((error) => {
@@ -52,14 +52,19 @@ const Map = () => {
   });
 
   if (allBeacons !== undefined) {
+    let beaconId: any[] = [];
     let positionVector: any[] = [];
 
+    const initialTime = "2024-05-12T10:15:00"; //! Si se cambia el tiempo en tiempo real también se cambian las marcas que aparecen
     // eslint-disable-next-line array-callback-return
     allBeacons.map((beacon: any) => {
-      positionVector.push([
-        beacon.location.latitude,
-        beacon.location.longitude,
-      ]);
+      if (beacon.time === initialTime) {
+        beaconId.push(beacon._id);
+        positionVector.push([
+          beacon.location.latitude,
+          beacon.location.longitude,
+        ]);
+      }
     });
 
     const initialPosition: LatLngTuple = [28.4916, -15.6291]; // To center the map into Canary Islands
@@ -88,17 +93,23 @@ const Map = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {positionVector.map((position: any, index: number) => (
-              <Marker position={position} icon={customIcon}>
-                <Popup>
-                  <p>Latitude: {allBeacons?.[index]?.location?.latitude}</p>
-                  <p>Longitude: {allBeacons?.[index]?.location?.longitude}</p>
-                  <p>Altitude: {allBeacons?.[index]?.location?.altitude}</p>
-                  <p>Bearing: {allBeacons?.[index]?.location?.bearing}</p>
-                  <p>Speed: {allBeacons?.[index]?.location?.speed}</p>
-                </Popup>
-              </Marker>
-            ))}
+            {positionVector.map((position: any, index: number) => {
+              const beacon = allBeacons.find(
+                (b: any) => b._id === beaconId[index]
+              );
+              return (
+                <Marker position={position} icon={customIcon}>
+                  <Popup>
+                    <p>Time: {moment(beacon?.time).format('DD/MM/YYYY HH:mm:ss')}</p>
+                    <p>Latitude: {beacon?.location?.latitude}</p>
+                    <p>Longitude: {beacon?.location?.longitude}</p>
+                    <p>Altitude: {beacon?.location?.altitude}</p>
+                    <p>Bearing: {beacon?.location?.bearing}</p>
+                    <p>Speed: {beacon?.location?.speed}</p>
+                  </Popup>
+                </Marker>
+              );
+            })}
           </MapContainer>
         </div>
       </div>
