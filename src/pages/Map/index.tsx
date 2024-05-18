@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import useBeacons from "./hooks/useBeacons";
 import L from "leaflet";
 import iconoPeaton from "../../img/hombre-peatonal.png";
-import {FullscreenControl} from "react-leaflet-fullscreen";
-import 'leaflet.fullscreen/Control.FullScreen.css';
+import { FullscreenControl } from "react-leaflet-fullscreen";
+import "leaflet.fullscreen/Control.FullScreen.css";
+import DrawTools from "./components/DrawTools.tsx";
 
 interface Beacon {
   beaconId: number;
@@ -82,11 +83,12 @@ const Map = () => {
             style={{ height: "100%", width: "100%" }}
           >
             <FullscreenControl position="topleft" />
+            <DrawTools />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            { positionVector.map((position: any, index: number) => (
+            {positionVector.map((position: any, index: number) => (
               <Marker position={position} icon={customIcon}>
                 <Popup>
                   <p>Latitude: {allBeacons?.[index]?.location?.latitude}</p>
@@ -96,8 +98,7 @@ const Map = () => {
                   <p>Speed: {allBeacons?.[index]?.location?.speed}</p>
                 </Popup>
               </Marker>
-            ))
-            }
+            ))}
           </MapContainer>
         </div>
       </div>
