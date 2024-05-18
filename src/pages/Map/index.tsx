@@ -43,9 +43,9 @@ const Map = () => {
 
   const customIcon = L.icon({
     iconUrl: iconoPeaton,
-    iconSize: [38 / 2, 95 / 3], // tamaño del icono
-    iconAnchor: [22 / 3, 94 / 3], // punto del icono que corresponderá a la ubicación del marcador
-    popupAnchor: [0, -76 + 40], // punto relativo al icono donde se abrirá el popup
+    iconSize: [38 / 2, 95 / 3], // Icon size
+    iconAnchor: [22 / 3, 94 / 3], // point of the icon that will correspond to the marker's location
+    popupAnchor: [0, -76 + 40], // point of the render of the popup
   });
 
   if (allBeacons !== undefined) {
@@ -58,10 +58,8 @@ const Map = () => {
         beacon.location.longitude,
       ]);
     });
-    const initialPosition: LatLngTuple = [
-      allBeacons?.[0]?.location?.latitude ?? 0,
-      allBeacons?.[0]?.location?.longitude ?? 0,
-    ];
+
+    const initialPosition: LatLngTuple = [28.4916, -15.6291]; // To center the map into Canary Islands
 
     return (
       <div
@@ -77,7 +75,7 @@ const Map = () => {
         <div style={{ width: "70%", height: "70%" }}>
           <MapContainer
             center={initialPosition}
-            zoom={13}
+            zoom={8}
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
