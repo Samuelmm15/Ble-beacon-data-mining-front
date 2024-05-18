@@ -45,11 +45,20 @@ const Map = () => {
     iconUrl: iconoPeaton,
     iconSize: [38 / 2, 95 / 3], // tamaño del icono
     iconAnchor: [22 / 3, 94 / 3], // punto del icono que corresponderá a la ubicación del marcador
-    popupAnchor: [0, -76 + 40] // punto relativo al icono donde se abrirá el popup
+    popupAnchor: [0, -76 + 40], // punto relativo al icono donde se abrirá el popup
   });
 
   if (allBeacons !== undefined) {
-    const position: LatLngTuple = [
+    let positionVector: any[] = [];
+
+    // eslint-disable-next-line array-callback-return
+    allBeacons.map((beacon: any) => {
+      positionVector.push([
+        beacon.location.latitude,
+        beacon.location.longitude,
+      ]);
+    });
+    const initialPosition: LatLngTuple = [
       allBeacons?.[0]?.location?.latitude ?? 0,
       allBeacons?.[0]?.location?.longitude ?? 0,
     ];
@@ -67,7 +76,7 @@ const Map = () => {
         <NavBar isLoggedIn={isLoggedIn} />
         <div style={{ width: "70%", height: "70%" }}>
           <MapContainer
-            center={position}
+            center={initialPosition}
             zoom={13}
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
@@ -76,15 +85,18 @@ const Map = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={position} icon={customIcon}>
-              <Popup>
-                <p>Latitude: {allBeacons?.[0]?.location?.latitude}</p>
-                <p>Longitude: {allBeacons?.[0]?.location?.longitude}</p>
-                <p>Altitude: {allBeacons?.[0]?.location?.altitude}</p>
-                <p>Bearing: {allBeacons?.[0]?.location?.bearing}</p>
-                <p>Speed: {allBeacons?.[0]?.location?.speed}</p>
-              </Popup>
-            </Marker>
+            { positionVector.map((position: any, index: number) => (
+              <Marker position={position} icon={customIcon}>
+                <Popup>
+                  <p>Latitude: {allBeacons?.[index]?.location?.latitude}</p>
+                  <p>Longitude: {allBeacons?.[index]?.location?.longitude}</p>
+                  <p>Altitude: {allBeacons?.[index]?.location?.altitude}</p>
+                  <p>Bearing: {allBeacons?.[index]?.location?.bearing}</p>
+                  <p>Speed: {allBeacons?.[index]?.location?.speed}</p>
+                </Popup>
+              </Marker>
+            ))
+            }
           </MapContainer>
         </div>
       </div>
