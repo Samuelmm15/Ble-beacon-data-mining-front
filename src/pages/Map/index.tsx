@@ -4,7 +4,8 @@ import "leaflet/dist/leaflet.css";
 import NavBar from "src/components/NavBar";
 import { useEffect, useState } from "react";
 import useBeacons from "./hooks/useBeacons";
-import L from 'leaflet';
+import L from "leaflet";
+import iconoPeaton from "../../img/hombre-peatonal.png";
 
 interface Beacon {
   beaconId: number;
@@ -22,7 +23,7 @@ const Map = () => {
   const { getBeacons } = useBeacons();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [allBeacons, setAllBeacons] = useState<Beacon[]>([]);
+  const [allBeacons, setAllBeacons] = useState<Beacon[] | undefined>(undefined);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,13 +42,13 @@ const Map = () => {
   }, []);
 
   const customIcon = L.icon({
-    iconUrl: '../../img/hombre-peatonal.png',
+    iconUrl: iconoPeaton,
     iconSize: [38, 95], // tamaño del icono
     iconAnchor: [22, 94], // punto del icono que corresponderá a la ubicación del marcador
-    popupAnchor: [-3, -76] // punto relativo al icono donde se abrirá el popup
+    popupAnchor: [-3, -76], // punto relativo al icono donde se abrirá el popup
   });
 
-  if (allBeacons) {
+  if (allBeacons !== undefined) {
     const position: LatLngTuple = [
       allBeacons?.[0]?.location?.latitude ?? 0,
       allBeacons?.[0]?.location?.longitude ?? 0,

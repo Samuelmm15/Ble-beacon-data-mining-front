@@ -8,13 +8,14 @@ const useUser = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
+      credentials: "include",
     });
 
     if (response.ok) {
       const data = response.json();
       return data;
     } else {
-      throw new Error("Error fetching user data");
+      throw new Error("No se ha podido iniciar sesión");
     }
   }
 
