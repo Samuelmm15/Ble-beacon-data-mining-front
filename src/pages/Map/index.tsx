@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import useBeacons from "./hooks/useBeacons";
 import L from "leaflet";
 import iconoPeaton from "../../img/hombre-peatonal.png";
+import {FullscreenControl} from "react-leaflet-fullscreen";
+import 'leaflet.fullscreen/Control.FullScreen.css';
 
 interface Beacon {
   beaconId: number;
@@ -79,6 +81,7 @@ const Map = () => {
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
+            <FullscreenControl position="topleft" />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
