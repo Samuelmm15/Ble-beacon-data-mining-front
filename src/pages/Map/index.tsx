@@ -43,9 +43,9 @@ const Map = () => {
 
   const customIcon = L.icon({
     iconUrl: iconoPeaton,
-    iconSize: [38, 95], // tamaño del icono
-    iconAnchor: [22, 94], // punto del icono que corresponderá a la ubicación del marcador
-    popupAnchor: [-3, -76], // punto relativo al icono donde se abrirá el popup
+    iconSize: [38 / 2, 95 / 3], // tamaño del icono
+    iconAnchor: [22 / 3, 94 / 3], // punto del icono que corresponderá a la ubicación del marcador
+    popupAnchor: [0, -76 + 40] // punto relativo al icono donde se abrirá el popup
   });
 
   if (allBeacons !== undefined) {
@@ -78,7 +78,11 @@ const Map = () => {
             />
             <Marker position={position} icon={customIcon}>
               <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
+                <p>Latitude: {allBeacons?.[0]?.location?.latitude}</p>
+                <p>Longitude: {allBeacons?.[0]?.location?.longitude}</p>
+                <p>Altitude: {allBeacons?.[0]?.location?.altitude}</p>
+                <p>Bearing: {allBeacons?.[0]?.location?.bearing}</p>
+                <p>Speed: {allBeacons?.[0]?.location?.speed}</p>
               </Popup>
             </Marker>
           </MapContainer>
