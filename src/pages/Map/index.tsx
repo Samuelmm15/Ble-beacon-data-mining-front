@@ -10,7 +10,7 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools.tsx";
 import moment from "moment";
-import { Col, DatePicker, Input, Row, Slider, Spin } from "antd";
+import { Col, DatePicker, Input, Row, Slider, Spin, message } from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -43,7 +43,7 @@ const Map = () => {
         setAllBeacons(data);
       })
       .catch((error) => {
-        alert(error.message);
+        message.error(error.message);
       });
   }, []);
 

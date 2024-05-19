@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from "react";
 import useUser from "./hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 const LogIn = () => {
   const logo =
@@ -15,12 +16,12 @@ const LogIn = () => {
     event.preventDefault();
     getLogin(email, password)
       .then((data) => {
-        alert(data.message);
+        message.success(data.message);
         localStorage.setItem("token", data.token);
         navigate("/home");
       })
       .catch((error) => {
-        alert(error.message);
+        message.error(error.message);
       });
   };
 

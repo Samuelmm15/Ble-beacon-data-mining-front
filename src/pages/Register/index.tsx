@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useUserRegister from "./hooks/useUserRegister";
+import { message } from "antd";
 
 const Register = () => {
   const logo =
@@ -20,7 +21,6 @@ const Register = () => {
     const newPassword = e.target.value;
     setPassword(newPassword);
 
-    // Establecer tus propias condiciones de contraseña aquí
     if (newPassword.length < 8) {
       setPasswordError("La contraseña debe tener al menos 8 caracteres");
     } else if (!/\d/.test(newPassword)) {
@@ -37,19 +37,19 @@ const Register = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      message.error("Passwords do not match");
       return;
     } else if (passwordError) {
-      alert("Password does not meet the requirements");
+      message.error("Password does not meet the requirements");
       return;
     } else {
       setRegister(name, email, password)
         .then((data) => {
-          alert("User created successfully");
+          message.success("User created successfully");
           navigate("/home");
         })
         .catch((error) => {
-          alert(error.message);
+          message.error(error.message);
         });
     }
   };
