@@ -10,6 +10,7 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools.tsx";
 import moment from "moment";
+import { Col, InputNumber, Row, Slider, Spin } from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -28,6 +29,7 @@ const Map = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [allBeacons, setAllBeacons] = useState<Beacon[] | undefined>(undefined);
+  const [inputValue, setInputValue] = useState<number | null>(1);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,6 +45,11 @@ const Map = () => {
         alert(error.message);
       });
   }, []);
+
+  const onChange = (value: number | null) => {
+    setInputValue(value);
+    // Aquí puedes agregar el código para actualizar el mapa
+  };
 
   const customIcon = L.icon({
     iconUrl: iconoPeaton,
@@ -100,7 +107,9 @@ const Map = () => {
               return (
                 <Marker position={position} icon={customIcon}>
                   <Popup>
-                    <p>Time: {moment(beacon?.time).format('DD/MM/YYYY HH:mm:ss')}</p>
+                    <p>
+                      Time: {moment(beacon?.time).format("DD/MM/YYYY HH:mm:ss")}
+                    </p>
                     <p>Latitude: {beacon?.location?.latitude}</p>
                     <p>Longitude: {beacon?.location?.longitude}</p>
                     <p>Altitude: {beacon?.location?.altitude}</p>
@@ -111,12 +120,47 @@ const Map = () => {
               );
             })}
           </MapContainer>
+          <div style={{ width: "100%", marginTop: "20px" }}>
+            <Row>
+              <Col span={21}>
+                <Slider
+                  min={1}
+                  max={20}
+                  onChange={onChange}
+                  value={typeof inputValue === "number" ? inputValue : 0}
+                  style={{ width: "100%" }}
+                />
+              </Col>
+              <Col span={3}>
+                <InputNumber
+                  min={1}
+                  max={20}
+                  style={{ margin: "0 30px" }}
+                  value={inputValue}
+                  onChange={(value: number | null) => onChange(value)}
+                />
+              </Col>
+            </Row>
+          </div>
         </div>
       </div>
     );
   } else {
-    //! Cambiar esto por un spinner de carga
-    return <h1>Loading...</h1>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div role="status">
+          <Spin size="large" />
+          <span className="sr-only">Cargando...</span>
+        </div>
+      </div>
+    );
   }
 };
 
