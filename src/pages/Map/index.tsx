@@ -10,7 +10,7 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools.tsx";
 import moment from "moment";
-import { Col, DatePicker, Row, Slider, Spin } from "antd";
+import { Col, DatePicker, Input, Row, Slider, Spin } from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -138,7 +138,7 @@ const Map = () => {
           </MapContainer>
           <div style={{ width: "100%", marginTop: "20px" }}>
             <Row>
-              <Col span={21}>
+              <Col span={18}>
                 <Slider
                   min={0}
                   max={24}
@@ -147,13 +147,17 @@ const Map = () => {
                   style={{ width: "100%" }}
                 />
               </Col>
-              <Col span={3}>
+              <Col span={5}>
                 <DatePicker
                   showTime={{ format: "HH:mm:ss" }}
                   format="YYYY-MM-DD HH:mm:ss"
-                  value={typeof time === "string" ? moment(time) : null}
+                  value={
+                    typeof time === "string"
+                      ? moment(time, "YYYY-MM-DD HH:mm:ss")
+                      : null
+                  }
                   onChange={onDateChange}
-                  style={{ margin: "0 30px" }}
+                  style={{ margin: "0 40px", width: "100%" }}
                 />
               </Col>
             </Row>
