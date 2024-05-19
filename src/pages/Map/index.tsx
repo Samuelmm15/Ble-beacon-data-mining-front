@@ -10,7 +10,7 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools.tsx";
 import moment from "moment";
-import { Col, InputNumber, Row, Slider, Spin } from "antd";
+import { Col, DatePicker, Row, Slider, Spin } from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -29,7 +29,8 @@ const Map = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [allBeacons, setAllBeacons] = useState<Beacon[] | undefined>(undefined);
-  const [inputValue, setInputValue] = useState<number | null>(1);
+  const [time, setTime] = useState<string>("2024-05-12T10:15:00");
+  const [sliderValue, setSliderValue] = useState<number>(0);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,9 +47,24 @@ const Map = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const newTime = moment("2024-05-12T10:15:00")
+      .add(sliderValue * 5, "minutes")
+      .format("YYYY-MM-DDTHH:mm:ss");
+    setTime(newTime);
+  }, [sliderValue]);
+
   const onChange = (value: number | null) => {
-    setInputValue(value);
-    // Aquí puedes agregar el código para actualizar el mapa
+    if (value !== null) {
+      setSliderValue(value);
+    }
+  };
+
+  const onDateChange = (date: moment.Moment | null) => {
+    if (date !== null) {
+      setSliderValue(0);
+      setTime(date.format("YYYY-MM-DDTHH:mm:ss"));
+    }
   };
 
   const customIcon = L.icon({
@@ -62,7 +78,7 @@ const Map = () => {
     let beaconId: any[] = [];
     let positionVector: any[] = [];
 
-    const initialTime = "2024-05-12T10:15:00"; //! Si se cambia el tiempo en tiempo real también se cambian las marcas que aparecen
+    const initialTime = time; //! Si se cambia el tiempo en tiempo real también se cambian las marcas que aparecen
     // eslint-disable-next-line array-callback-return
     allBeacons.map((beacon: any) => {
       if (beacon.time === initialTime) {
@@ -124,20 +140,20 @@ const Map = () => {
             <Row>
               <Col span={21}>
                 <Slider
-                  min={1}
-                  max={20}
+                  min={0}
+                  max={24}
                   onChange={onChange}
-                  value={typeof inputValue === "number" ? inputValue : 0}
+                  value={sliderValue}
                   style={{ width: "100%" }}
                 />
               </Col>
               <Col span={3}>
-                <InputNumber
-                  min={1}
-                  max={20}
+                <DatePicker
+                  showTime={{ format: "HH:mm:ss" }}
+                  format="YYYY-MM-DD HH:mm:ss"
+                  value={typeof time === "string" ? moment(time) : null}
+                  onChange={onDateChange}
                   style={{ margin: "0 30px" }}
-                  value={inputValue}
-                  onChange={(value: number | null) => onChange(value)}
                 />
               </Col>
             </Row>
