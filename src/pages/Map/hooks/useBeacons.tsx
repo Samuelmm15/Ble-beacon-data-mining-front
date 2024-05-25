@@ -17,7 +17,23 @@ const useBeacons = () => {
     }
   }
 
-  return { getBeacons };
+  async function getDrones() {
+    const response = await fetch("https://localhost:3000/api/trackerData", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching beacons data");
+    }
+  }
+
+  return { getBeacons, getDrones };
 };
 
 export default useBeacons;

@@ -5,12 +5,14 @@ import NavBar from "src/components/NavBar";
 import { useEffect, useState } from "react";
 import useBeacons from "./hooks/useBeacons";
 import L from "leaflet";
-import iconoPeaton from "../../img/hombre-peatonal.png";
+import iconoPeaton from "../../img/beacon.png";
+import IconoDron from "../../img/drone.png"
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools.tsx";
 import moment from "moment";
 import { Col, DatePicker, Input, Row, Slider, Spin, message } from "antd";
+import { get } from "http";
 
 interface Beacon {
   beaconId: number;
@@ -24,11 +26,25 @@ interface Beacon {
   };
 }
 
+interface Drone {
+  droneId: number;
+  time: string;
+  location: {
+    latitude: number;
+    longitude: number;
+    altitude: number;
+    bearing: number;
+    speed: number;
+  };
+  rssi: number;
+}
+
 const Map = () => {
-  const { getBeacons } = useBeacons();
+  const { getBeacons, getDrones } = useBeacons();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [allBeacons, setAllBeacons] = useState<Beacon[] | undefined>(undefined);
+  const [allDrones, setAllDrones] = useState<Drone[] | undefined>(undefined);
   const [time, setTime] = useState<string>("2024-05-12T10:15:00");
   const [sliderValue, setSliderValue] = useState<number>(0);
 
@@ -45,6 +61,14 @@ const Map = () => {
       .catch((error) => {
         message.error(error.message);
       });
+
+      getDrones()
+        .then((data) => {
+          setAllDrones(data);
+        })
+        .catch((error) => {
+          message.error(error.message);
+        })
   }, []);
 
   useEffect(() => {
@@ -74,12 +98,22 @@ const Map = () => {
     popupAnchor: [0, -76 + 40], // point of the render of the popup
   });
 
+  const droneIcon = L.icon({
+    iconUrl: IconoDron,
+    iconSize: [38 / 2, 95 / 3], // Icon size
+    iconAnchor: [22 / 3, 94 / 3], // point of the icon that will correspond to the marker's location
+    popupAnchor: [0, -76 + 40], // point of the render of the popup
+  });
+
   if (allBeacons !== undefined) {
     let beaconId: any[] = [];
     let positionVector: any[] = [];
+    let positionDrone: any[] = [];
+    let droneId: any[] = [];
 
     const initialTime = time; //! Si se cambia el tiempo en tiempo real también se cambian las marcas que aparecen
     // eslint-disable-next-line array-callback-return
+    //? Se recorren todos los beacons para mostrarlos en el mapa
     allBeacons.map((beacon: any) => {
       if (beacon.time === initialTime) {
         beaconId.push(beacon._id);
@@ -89,6 +123,17 @@ const Map = () => {
         ]);
       }
     });
+
+    //? Se recorren todos los drones para mostrarlos en el mapa
+    allDrones?.map((drone: any) => {
+      if (drone.time === initialTime) {
+        droneId.push(drone._id);
+        positionDrone.push([
+          drone.location.latitude,
+          drone.location.longitude,
+        ]);
+      }
+    })
 
     const initialPosition: LatLngTuple = [28.4916, -15.6291]; // To center the map into Canary Islands
 
@@ -131,6 +176,26 @@ const Map = () => {
                     <p>Altitude: {beacon?.location?.altitude}</p>
                     <p>Bearing: {beacon?.location?.bearing}</p>
                     <p>Speed: {beacon?.location?.speed}</p>
+                  </Popup>
+                </Marker>
+              );
+            })}
+            {positionDrone.map((position: any, index: number) => {
+              const drone = allDrones?.find(
+                (b: any) => b._id === droneId[index]
+              );
+              return (
+                <Marker position={position} icon={droneIcon}>
+                  <Popup>
+                    <p>
+                      Time: {moment(drone?.time).format("DD/MM/YYYY HH:mm:ss")}
+                    </p>
+                    <p>Latitude: {drone?.location?.latitude}</p>
+                    <p>Longitude: {drone?.location?.longitude}</p>
+                    <p>Altitude: {drone?.location?.altitude}</p>
+                    <p>Bearing: {drone?.location?.bearing}</p>
+                    <p>Speed: {drone?.location?.speed}</p>
+                    <p>RSSI: {drone?.rssi}</p>
                   </Popup>
                 </Marker>
               );
