@@ -6,13 +6,14 @@ import useBeaconsOperations from "./hooks/useBeaconsOperations";
 import { useState } from "react";
 import { Button, Col, Modal, Row, Statistic } from "antd";
 import { Radar } from "@ant-design/charts";
+import CSVDownload from "./components/CSVDownload";
 
 type DrawToolsProps = {
   time: any;
 };
 
 type ModalData = {
-  count: number;
+  beacons: number;
   averageSpeed: number;
   radarChartData: any;
 };
@@ -29,6 +30,7 @@ const DrawTools = ({ time }: DrawToolsProps) => {
     time: any
   ) => {
     const data = await getNumberOfBeacons(_southWest, _northEast, time);
+    console.log(data)
     setModalData(data);
     setVisible(true);
   };
@@ -127,6 +129,7 @@ const DrawTools = ({ time }: DrawToolsProps) => {
         onCancel={handleClose}
         destroyOnClose
         footer={[
+          <CSVDownload data={modalData} />,
           <Button key="submit" type="primary" onClick={handleClose}>
             OK
           </Button>,
@@ -134,7 +137,7 @@ const DrawTools = ({ time }: DrawToolsProps) => {
       >
         <Row gutter={16}>
           <Col span={12}>
-            <Statistic title="Number of beacons" value={modalData?.count} />
+            <Statistic title="Number of beacons" value={modalData?.beacons} />
           </Col>
           <Col span={12}>
             <Statistic title="Average Speed" value={modalData?.averageSpeed} />
