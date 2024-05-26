@@ -9,10 +9,9 @@ import iconoPeaton from "../../img/beacon.png";
 import IconoDron from "../../img/drone.png"
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
-import DrawTools from "./components/DrawTools.tsx";
+import DrawTools from "./components/DrawTools";
 import moment from "moment";
-import { Col, DatePicker, Input, Row, Slider, Spin, message } from "antd";
-import { get } from "http";
+import { Col, DatePicker, Row, Slider, Spin, message } from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -156,7 +155,7 @@ const Map = () => {
             style={{ height: "100%", width: "100%" }}
           >
             <FullscreenControl position="topleft" />
-            <DrawTools />
+            <DrawTools time={time} />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
