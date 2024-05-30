@@ -2,7 +2,8 @@ import ProTable, { ActionType, ProColumns } from "@ant-design/pro-table";
 import React, { useEffect, useRef, useState } from "react";
 import NavBar from "src/components/NavBar";
 import useTableData from "./hooks/useTableData";
-import { Spin, message } from "antd";
+import { Spin, message, ConfigProvider } from "antd";
+import enUS from "antd/lib/locale/en_US";
 
 interface Beacon {
   _id: string;
@@ -46,75 +47,98 @@ const TableData = () => {
 
   const columns: ProColumns<Beacon>[] = [
     {
-      title: "Identificador",
+      title: "Id",
       dataIndex: "beaconId",
       key: "beaconId",
       valueType: "text",
     },
     {
-      title: "Tiempo",
+      title: "TimeStamp",
       dataIndex: "time",
       key: "time",
       valueType: "dateTime",
+      sorter: true,
     },
     {
-      title: "Latitud",
+      title: "Latitude",
       dataIndex: "location",
       key: "latitude",
       valueType: "text",
       render: (_, record) => record.location?.latitude,
     },
     {
-      title: "Longitud",
+      title: "Longitude",
       dataIndex: "location",
       key: "longitude",
       valueType: "text",
       render: (_, record) => record.location?.longitude,
     },
     {
-      title: "Altitud",
+      title: "Altitude",
       dataIndex: "location",
       key: "altitude",
       valueType: "text",
       render: (_, record) => record.location?.altitude,
+      sorter: true,
     },
     {
-      title: "Orientación",
+      title: "Bearing",
       dataIndex: "location",
       key: "bearing",
       valueType: "text",
       render: (_, record) => record.location?.bearing,
     },
     {
-      title: "Velocidad",
+      title: "Speed",
       dataIndex: "location",
       key: "speed",
       valueType: "text",
       render: (_, record) => record.location?.speed,
+      sorter: true,
     },
   ];
 
   if (beaconData.length === 0) {
-    return <Spin size="large" fullscreen/>;
+    return <Spin size="large" fullscreen />;
   } else {
     return (
       <div>
         <NavBar isLoggedIn={isLoggedIn} />
-        <div style={{ marginTop: "10px" }}>
-          <ProTable<Beacon>
-            columns={columns}
-            actionRef={actionRef}
-            cardBordered
-            request={async () => {
-              return {
-                data: beaconData,
-                success: true,
-              };
-            }}
-            rowKey="_id"
-            search={false}
-            pagination={false}
-          />
+        <div style={{ marginTop: "70px" }}>
+          <ConfigProvider locale={enUS}>
+            <ProTable<Beacon>
+              columns={columns}
+              actionRef={actionRef}
+              cardBordered
+              request={async (params, sorter, filter) => {
+                let sortedData = [...beaconData];
+              
+                if (sorter && sorter.location) {
+                  sortedData.sort((a, b) => {
+                    const aValue = parseFloat(a.location?.speed || '0');
+                    const bValue = parseFloat(b.location?.speed || '0');
+                    const compareResult = aValue - bValue;
+                    return sorter.location === 'ascend' ? compareResult : -compareResult;
+                  });
+                } else if (sorter && sorter.time) {
+                  sortedData.sort((a, b) => {
+                    const aValue = new Date(a.time).getTime();
+                    const bValue = new Date(b.time).getTime();
+                    const compareResult = aValue - bValue;
+                    return sorter.time === 'ascend' ? compareResult : -compareResult;
+                  });
+                }
+              
+                return {
+                  data: sortedData,
+                  success: true,
+                };
+              }}
+              rowKey="_id"
+              pagination={false}
+              search={false}
+            />
+          </ConfigProvider>
         </div>
       </div>
     );
