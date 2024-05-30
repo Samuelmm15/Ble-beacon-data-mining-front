@@ -4,7 +4,9 @@ import NavBar from "src/components/NavBar";
 import useTableData from "./hooks/useTableData";
 import { Spin, message, ConfigProvider, Menu, Typography, Tooltip } from "antd";
 import enUS from "antd/lib/locale/en_US";
-import BeaconFirstOptionModal from "./components/beaconFirstOptionModal";
+import BeaconFirstOptionModal from "./components/BeaconFirstOptionModal";
+import BeaconSecondOptionModal from "./components/BeaconSecondOptionModal";
+import moment from "moment";
 
 export interface Beacon {
   _id: string;
@@ -28,6 +30,7 @@ const TableData = () => {
   const [beacons, setBeacons] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [timeRange, setTimeRange] = useState<string[]>([""]);
 
   const { getBeaconById, getAllBeaconIds } = useTableData();
 
@@ -61,9 +64,7 @@ const TableData = () => {
 
   const handleMenuClick = (e: any) => {
     setSelectedOption(e.key);
-    if (e.key === "option1") {
-      setIsVisible(true);
-    }
+    setIsVisible(true);
   };
 
   const handleCloseModal = () => {
@@ -218,12 +219,21 @@ const TableData = () => {
             </ConfigProvider>
           </div>
         </div>
-        {isVisible && (
+        {isVisible && selectedOption === "option1" && (
           <BeaconFirstOptionModal
             isVisible={isVisible}
             onClose={handleCloseModal}
             beacons={beacons}
             setBeaconId={setBeaconId}
+          />
+        )}
+        {isVisible && selectedOption === "option2" && (
+          <BeaconSecondOptionModal
+            isVisible={isVisible}
+            onClose={handleCloseModal}
+            beacons={beacons}
+            setBeaconId={setBeaconId}
+            setTimeRange={setTimeRange}
           />
         )}
       </>

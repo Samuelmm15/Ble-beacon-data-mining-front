@@ -15,6 +15,7 @@ const BeaconFirstOptionModal = ({
   beacons,
   setBeaconId,
 }: BeaconFirstOptionModalProps) => {
+  
   const handleSelectChange = (value: string) => {
     setBeaconId(value);
   };
