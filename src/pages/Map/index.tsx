@@ -240,8 +240,7 @@ const Map = () => {
         }}
       >
         <div role="status">
-          <Spin size="large" />
-          <span className="sr-only">Cargando...</span>
+          <Spin size="large" fullscreen />
         </div>
       </div>
     );
