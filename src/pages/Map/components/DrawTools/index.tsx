@@ -3,7 +3,7 @@ import { FeatureGroup } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import useBeaconsOperations from "./hooks/useBeaconsOperations";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Col, Modal, Row, Statistic } from "antd";
 import { Radar } from "@ant-design/charts";
 import CSVDownload from "./components/CSVDownload";
@@ -19,6 +19,9 @@ type ModalData = {
 };
 
 const DrawTools = ({ time }: DrawToolsProps) => {
+  const timeRef = useRef(time);
+  timeRef.current = time;
+
   const { getNumberOfBeacons } = useBeaconsOperations();
 
   const [visible, setVisible] = useState(false);
@@ -27,10 +30,8 @@ const DrawTools = ({ time }: DrawToolsProps) => {
   const handleBeaconsCounters = async (
     _southWest: any,
     _northEast: any,
-    time: any
   ) => {
-    const data = await getNumberOfBeacons(_southWest, _northEast, time);
-    console.log(data)
+    const data = await getNumberOfBeacons(_southWest, _northEast, timeRef.current);
     setModalData(data);
     setVisible(true);
   };
@@ -39,7 +40,7 @@ const DrawTools = ({ time }: DrawToolsProps) => {
     const layer = e.layer;
     // Obtención de los límites
     const bounds = layer.getBounds();
-    handleBeaconsCounters(bounds._southWest, bounds._northEast, time);
+    handleBeaconsCounters(bounds._southWest, bounds._northEast);
   };
 
   const handleClose = () => {

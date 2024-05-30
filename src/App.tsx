@@ -4,6 +4,7 @@ import Map from "./pages/Map";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import { Navigate, useLocation } from "react-router-dom";
+import TableData from "./pages/TableData";
 
 function App() {
   const ProtectedElement = ({ element }: { element: React.ReactElement }) => {
@@ -27,7 +28,7 @@ function App() {
           <Route path="/map" element={<ProtectedElement element={<Map />} />} />
           <Route
             path="/dataBase"
-            element={<ProtectedElement element={<h1>Data Base</h1>} />}
+            element={<ProtectedElement element={<TableData />} />}
           />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
