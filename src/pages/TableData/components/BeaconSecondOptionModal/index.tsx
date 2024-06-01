@@ -1,5 +1,5 @@
 import { DatePicker, Modal, Select, Space } from "antd";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 
 interface BeaconSecondOptionModalProps {
   isVisible: boolean;
@@ -16,8 +16,10 @@ const BeaconSecondOptionModal = ({
   setBeaconId,
   setTimeRange,
 }: BeaconSecondOptionModalProps) => {
+  const actualBeaconId = useRef<string>("");
+
   const handleSelectChange = (value: string) => {
-    setBeaconId(value);
+    actualBeaconId.current = value;
   };
 
   const handleTimeRangeChange = (dates: any, dateStrings: [string, string]) => {
@@ -26,6 +28,7 @@ const BeaconSecondOptionModal = ({
         date.format("YYYY-MM-DDTHH:mm:ss")
       );
       setTimeRange(formattedDates);
+      setBeaconId(actualBeaconId.current);
     }
   };
 

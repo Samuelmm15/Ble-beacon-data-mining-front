@@ -7,6 +7,7 @@ import enUS from "antd/lib/locale/en_US";
 import BeaconFirstOptionModal from "./components/BeaconFirstOptionModal";
 import BeaconSecondOptionModal from "./components/BeaconSecondOptionModal";
 import moment from "moment";
+import useBeaconSecondOptionalModal from "./components/BeaconSecondOptionModal/hooks/useBeaconSecondOptionalModal";
 
 export interface Beacon {
   _id: string;
@@ -28,11 +29,12 @@ const TableData = () => {
   const [beaconId, setBeaconId] = useState<string>("1");
   const [beaconData, setBeaconData] = useState<Beacon[]>([]);
   const [beacons, setBeacons] = useState<string[]>([]);
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<string>("option0");
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [timeRange, setTimeRange] = useState<string[]>([""]);
 
   const { getBeaconById, getAllBeaconIds } = useTableData();
+  const { getBeaconByIdFiltered } = useBeaconSecondOptionalModal();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -42,14 +44,16 @@ const TableData = () => {
   }, []);
 
   useEffect(() => {
-    getBeaconById(beaconId)
-      .then((data) => {
-        setBeaconData(data);
-        actionRef.current?.reload();
-      })
-      .catch((error) => {
-        message.error(error.message);
-      });
+    if (selectedOption === "option1" || selectedOption === "option0") {
+      getBeaconById(beaconId)
+        .then((data) => {
+          setBeaconData(data);
+          actionRef.current?.reload();
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
   }, [beaconId]);
 
   useEffect(() => {
@@ -61,6 +65,23 @@ const TableData = () => {
         message.error(error.message);
       });
   }, []);
+
+  useEffect(() => {
+    if (selectedOption === "option2") {
+      getBeaconByIdFiltered(beaconId, timeRange[0], timeRange[1])
+        .then((data) => {
+          if (data.length > 0) {
+            setBeaconData(data);
+            actionRef.current?.reload();
+          } else {
+            message.error("No data found for the selected range of time.");
+          }
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
+  }, [beaconId, timeRange]);
 
   const handleMenuClick = (e: any) => {
     setSelectedOption(e.key);
@@ -154,14 +175,6 @@ const TableData = () => {
       >
         <Tooltip title="2. Buscar por rango de tiempo.">
           2. Buscar por rango de tiempo.
-        </Tooltip>
-      </Menu.Item>
-      <Menu.Item
-        key="option3"
-        style={{ maxWidth: "200px", textAlign: "center" }}
-      >
-        <Tooltip title="3. Buscar por rango de tiempo por un beacon concreto.">
-          3. Buscar por rango de tiempo por un beacon concreto.
         </Tooltip>
       </Menu.Item>
     </Menu>
