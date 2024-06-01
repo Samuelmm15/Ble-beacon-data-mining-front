@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "custom-color": "#F2E9E1",
+        "custom-color": "#FFFFFF",
         "navbar-color": "#4682B4",
         primary: {
           50: "#f0f9ff",
