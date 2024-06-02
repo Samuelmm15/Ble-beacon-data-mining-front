@@ -27,11 +27,12 @@ const DrawTools = ({ time }: DrawToolsProps) => {
   const [visible, setVisible] = useState(false);
   const [modalData, setModalData] = useState<ModalData>();
 
-  const handleBeaconsCounters = async (
-    _southWest: any,
-    _northEast: any,
-  ) => {
-    const data = await getNumberOfBeacons(_southWest, _northEast, timeRef.current);
+  const handleBeaconsCounters = async (_southWest: any, _northEast: any) => {
+    const data = await getNumberOfBeacons(
+      _southWest,
+      _northEast,
+      timeRef.current
+    );
     setModalData(data);
     setVisible(true);
   };
@@ -129,6 +130,8 @@ const DrawTools = ({ time }: DrawToolsProps) => {
         onOk={handleClose}
         onCancel={handleClose}
         destroyOnClose
+        centered
+        style={{ overflow: "hidden" }}
         footer={[
           <CSVDownload data={modalData} />,
           <Button key="submit" type="primary" onClick={handleClose}>
