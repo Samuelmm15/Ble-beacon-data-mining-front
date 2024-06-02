@@ -367,6 +367,9 @@ const TableData = () => {
                 <ProTable<Beacon>
                   columns={columns}
                   actionRef={actionRef}
+                  bordered
+                  headerTitle="Beacon Data"
+                  size="small"
                   request={async (params, sorter, filter) => {
                     let sortedData = [...beaconData];
 
@@ -408,7 +411,7 @@ const TableData = () => {
                     };
                   }}
                   rowKey="_id"
-                  pagination={false}
+                  pagination={{ pageSize: 5 }}
                   search={false}
                   style={{ width: "100%", height: "100%" }}
                 />
@@ -422,6 +425,9 @@ const TableData = () => {
                 <ProTable<Tracker>
                   columns={trackerColumns}
                   actionRef={trackerMenuactionRef}
+                  bordered
+                  headerTitle="Tracker Data"
+                  size="small"
                   request={async (params, sorter, filter) => {
                     let sortedData = [...trackerData];
 
@@ -473,7 +479,7 @@ const TableData = () => {
                     };
                   }}
                   rowKey="_id"
-                  pagination={false}
+                  pagination={{ pageSize: 5 }}
                   search={false}
                   style={{ width: "100%", height: "100%" }}
                 />
