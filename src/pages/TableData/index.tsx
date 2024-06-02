@@ -418,7 +418,7 @@ const TableData = () => {
               </div>
             </ConfigProvider>
           </div>
-          <div style={{ marginTop: "70px", height: "100%", width: "100%" }}>
+          <div style={{ height: "100%", width: "100%" }}>
             <ConfigProvider locale={enUS}>
               <div style={{ display: "flex", width: "100%", height: "100%" }}>
                 {trackerMenu}
