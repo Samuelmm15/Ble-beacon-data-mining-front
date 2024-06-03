@@ -30,9 +30,13 @@ const LogIn = () => {
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto transform md:h-screen lg:py-0 md:-translate-y-10">
         <a
           href="/"
-          className="flex flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+          className="flex flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white flex-shrink-0"
         >
-          <img className="w-40 h-40 mb-2" src={logo} alt="logo" />
+          <img
+            className="w-full h-auto max-w-20 max-h-20vh mb-2"
+            src={logo}
+            alt="logo"
+          />
           Real Time Drone Tracking
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
