@@ -5,6 +5,7 @@ import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import { Navigate, useLocation } from "react-router-dom";
 import TableData from "./pages/TableData";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const ProtectedElement = ({ element }: { element: React.ReactElement }) => {
@@ -31,7 +32,7 @@ function App() {
           />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/reset-password" element={<h1>Reset Password</h1>} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </div>

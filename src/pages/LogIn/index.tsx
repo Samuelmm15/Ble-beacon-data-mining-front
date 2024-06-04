@@ -2,9 +2,12 @@ import React, { useState, FormEvent } from "react";
 import useUser from "./hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { Spin, message } from "antd";
+import useResetPassword from "./hooks/useResetPassword";
 
 const LogIn = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { sendEmail } = useResetPassword();
 
   const logo =
     require("../../img/real-time-tracking-logo-circular.png") as string;
@@ -26,6 +29,21 @@ const LogIn = () => {
       .catch((error) => {
         message.error(error.message);
       });
+  };
+
+  const handleClickForgotPassword = () => {
+    if (email === "") {
+      message.error("Please enter your email");
+      return;
+    } else {
+      sendEmail(email)
+        .then((data) => {
+          message.success(data);
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
   };
 
   if (isLoading) {
@@ -81,7 +99,7 @@ const LogIn = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <a
-                    href="#"
+                    onClick={handleClickForgotPassword}
                     className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Forgot password?
