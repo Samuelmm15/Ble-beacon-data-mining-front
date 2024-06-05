@@ -22,7 +22,7 @@ const useBeaconsOperations = () => {
       const data = response.json();
       return data;
     } else {
-      throw new Error("No se ha podido realizar la operación");
+      throw new Error("The operation could not be performed");
     }
   }
 

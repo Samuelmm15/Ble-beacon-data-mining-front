@@ -18,7 +18,7 @@ const useValidateToken = () => {
       const data = await response.text();
       return data;
     } else {
-      throw new Error("No se ha podido iniciar sesión");
+      throw new Error("Unable to log in");
     }
   }
 
@@ -39,7 +39,7 @@ const useValidateToken = () => {
       const data = response.json();
       return data;
     } else {
-      throw new Error("No se ha podido iniciar sesión");
+      throw new Error("Unable to log in");
     }
   }
 
