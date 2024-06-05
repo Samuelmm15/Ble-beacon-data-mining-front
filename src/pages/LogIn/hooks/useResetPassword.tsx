@@ -15,7 +15,7 @@ const useResetPassword = () => {
       const data = await response.text();
       return data;
     } else {
-      throw new Error("No se ha validar el token");
+      throw new Error("Introduzca un correo válido");
     }
   }
 
