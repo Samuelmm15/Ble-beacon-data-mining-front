@@ -28,6 +28,7 @@ const LogIn = () => {
       })
       .catch((error) => {
         message.error(error.message);
+        setIsLoading(false);
       });
   };
 

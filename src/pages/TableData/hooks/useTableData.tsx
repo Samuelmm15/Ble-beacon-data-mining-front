@@ -84,12 +84,32 @@ const useTableData = () => {
     }
   }
 
+  async function getBeaconByHourRange(id: string, specificDate: string, startHour: string, endHour: string) {
+    const response = await fetch(
+      `https://localhost:3000/api/beacon/1?specificDate=${specificDate}&startHour=${startHour}&endHour=${endHour}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching beacon data");
+    }
+  }
+
   return {
     getBeaconById,
     getAllBeaconIds,
     getTrackerById,
     getAllTrackerIds,
     getTrackerByFiltered,
+    getBeaconByHourRange
   };
 };
 

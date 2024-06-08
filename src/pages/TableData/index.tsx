@@ -11,6 +11,7 @@ import useBeaconSecondOptionalModal from "./components/BeaconSecondOptionModal/h
 import TrackerFirstOptionModal from "./components/TrackerFirstOptionModal";
 import { get } from "http";
 import TrackerSecondOptionModal from "./components/TrackerSecondOptionModal";
+import BeaconThirdOptionModal from "./components/BeaconThirdOptionModal";
 
 export interface Beacon {
   _id: string;
@@ -55,6 +56,8 @@ const TableData = () => {
   const [trackers, setTrackers] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [timeRange, setTimeRange] = useState<string[]>([""]);
+  const [specificDate, setSpecificDate] = useState<string>("");
+  const [hourRange, setHourRange] = useState<string[]>([""]);
 
   const {
     getBeaconById,
@@ -62,6 +65,7 @@ const TableData = () => {
     getTrackerById,
     getAllTrackerIds,
     getTrackerByFiltered,
+    getBeaconByHourRange,
   } = useTableData();
   const { getBeaconByIdFiltered } = useBeaconSecondOptionalModal();
 
@@ -137,6 +141,23 @@ const TableData = () => {
         });
     }
   }, [beaconId, timeRange]);
+
+  useEffect(() => {
+    if (selectedOption === "option3") {
+      getBeaconByHourRange(beaconId, specificDate, hourRange[0], hourRange[1])
+        .then((data) => {
+          if (data.length > 0) {
+            setBeaconData(data);
+            actionRef.current?.reload();
+          } else {
+            message.error("No data found for the selected range of time.");
+          }
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
+  }, [hourRange]);
 
   useEffect(() => {
     if (trackerSelectedOption === "trackerOption2") {
@@ -313,6 +334,14 @@ const TableData = () => {
       >
         <Tooltip title="2. Buscar por rango de tiempo.">
           2. Buscar por rango de tiempo.
+        </Tooltip>
+      </Menu.Item>
+      <Menu.Item
+        key="option3"
+        style={{ maxWidth: "200px", textAlign: "center" }}
+      >
+        <Tooltip title="3. Buscar por rango de horas.">
+          3. Buscar por rango de horas.
         </Tooltip>
       </Menu.Item>
     </Menu>
@@ -502,6 +531,15 @@ const TableData = () => {
             beacons={beacons}
             setBeaconId={setBeaconId}
             setTimeRange={setTimeRange}
+          />
+        )}
+        {isVisible && selectedOption === "option3" && (
+          <BeaconThirdOptionModal
+            isVisible={isVisible}
+            onClose={handleCloseModal}
+            beacons={beacons}
+            setSpecificDate={setSpecificDate}
+            setHourRange={setHourRange}
           />
         )}
         {isVisible && trackerSelectedOption === "trackerOption1" && (
