@@ -98,7 +98,7 @@ const useTableData = () => {
     endHour: string
   ) {
     const response = await fetch(
-      `https://localhost:3000/api/beacon/1?specificDate=${specificDate}&startHour=${startHour}&endHour=${endHour}`,
+      `https://localhost:3000/api/beacon/${id}?specificDate=${specificDate}&startHour=${startHour}&endHour=${endHour}`,
       {
         method: "GET",
         headers: {
@@ -157,6 +157,30 @@ const useTableData = () => {
     }
   }
 
+  async function getTrackerByHourRange(
+    id: string,
+    specificDate: string,
+    startHour: string,
+    endHour: string
+  ) {
+    const response = await fetch(
+      `https://localhost:3000/api/trackerData/${id}?specificDate=${specificDate}&startHour=${startHour}&endHour=${endHour}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching tracker data");
+    }
+  }
+
   return {
     getBeaconById,
     getAllBeaconIds,
@@ -166,6 +190,7 @@ const useTableData = () => {
     getBeaconByHourRange,
     getAllBeaconByDateRange,
     getAllBeaconByHourRange,
+    getTrackerByHourRange,
   };
 };
 
