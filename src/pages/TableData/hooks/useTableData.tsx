@@ -115,13 +115,32 @@ const useTableData = () => {
     }
   }
 
-  async function getAllBeaconByDateRange(
-    id: string,
-    startDate: string,
-    endDate: string
-  ) {
+  async function getAllBeaconByDateRange(startDate: string, endDate: string) {
     const response = await fetch(
       `https://localhost:3000/api/beacon/allBeaconsByDateRange?startDate=${startDate}&endDate=${endDate}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching beacon data");
+    }
+  }
+
+  async function getAllBeaconByHourRange(
+    specificDate: string,
+    startHour: string,
+    endHour: string
+  ) {
+    const response = await fetch(
+      `https://localhost:3000/api/beacon/allBeaconsByHourRange?date=${specificDate}&startHour=${startHour}&endHour=${endHour}`,
       {
         method: "GET",
         headers: {
@@ -146,6 +165,7 @@ const useTableData = () => {
     getTrackerByFiltered,
     getBeaconByHourRange,
     getAllBeaconByDateRange,
+    getAllBeaconByHourRange,
   };
 };
 

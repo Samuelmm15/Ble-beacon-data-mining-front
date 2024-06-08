@@ -13,6 +13,7 @@ import { get } from "http";
 import TrackerSecondOptionModal from "./components/TrackerSecondOptionModal";
 import BeaconThirdOptionModal from "./components/BeaconThirdOptionModal";
 import BeaconFourthOptionModal from "./components/BeaconFourthOptionModal";
+import BeaconFifthOptionModal from "./components/BeaconFifthOptionModal";
 
 export interface Beacon {
   _id: string;
@@ -68,6 +69,7 @@ const TableData = () => {
     getTrackerByFiltered,
     getBeaconByHourRange,
     getAllBeaconByDateRange,
+    getAllBeaconByHourRange,
   } = useTableData();
   const { getBeaconByIdFiltered } = useBeaconSecondOptionalModal();
 
@@ -163,7 +165,7 @@ const TableData = () => {
 
   useEffect(() => {
     if (selectedOption === "option4") {
-      getAllBeaconByDateRange(beaconId, timeRange[0], timeRange[1])
+      getAllBeaconByDateRange(timeRange[0], timeRange[1])
         .then((data) => {
           if (data.length > 0) {
             setBeaconData(data);
@@ -177,6 +179,23 @@ const TableData = () => {
         });
     }
   }, [timeRange]);
+
+  useEffect(() => {
+    if (selectedOption === "option5") {
+      getAllBeaconByHourRange(specificDate, hourRange[0], hourRange[1])
+        .then((data) => {
+          if (data.length > 0) {
+            setBeaconData(data);
+            actionRef.current?.reload();
+          } else {
+            message.error("No data found for the selected range of time.");
+          }
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
+  }, [hourRange]);
 
   useEffect(() => {
     if (trackerSelectedOption === "trackerOption2") {
@@ -367,8 +386,16 @@ const TableData = () => {
         key="option4"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="4. Mostrar todos los beacons de un rango de tiempo.">
-          4. Mostrar todos los beacons de un rango de tiempo.
+        <Tooltip title="4. Mostrar todos los beacons dentro de un rango de tiempo.">
+          4. Mostrar todos los beacons dentro de un rango de tiempo.
+        </Tooltip>
+      </Menu.Item>
+      <Menu.Item
+        key="option5"
+        style={{ maxWidth: "200px", textAlign: "center" }}
+      >
+        <Tooltip title="5. Mostrar todos los beacons dentro de un rango de horas.">
+          5. Mostrar todos los beacons dentro de un rango de horas.
         </Tooltip>
       </Menu.Item>
     </Menu>
@@ -574,6 +601,14 @@ const TableData = () => {
             isVisible={isVisible}
             onClose={handleCloseModal}
             setTimeRange={setTimeRange}
+          />
+        )}
+        {isVisible && selectedOption === "option5" && (
+          <BeaconFifthOptionModal
+            isVisible={isVisible}
+            onClose={handleCloseModal}
+            setSpecificDate={setSpecificDate}
+            setHourRange={setHourRange}
           />
         )}
         {isVisible && trackerSelectedOption === "trackerOption1" && (
