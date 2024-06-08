@@ -1,13 +1,13 @@
-import { DatePicker, Modal, Space } from "antd";
-import React, { Dispatch, SetStateAction } from "react";
+import { DatePicker, Modal, Space } from 'antd';
+import React, { Dispatch, SetStateAction } from 'react'
 
-interface BeaconFourthOptionModalProps {
+interface TrackerFourthOptionModalProps {
   isVisible: boolean;
   onClose: () => void;
   setTimeRange: Dispatch<SetStateAction<string[]>>;
 }
 
-const BeaconFourthOptionModal: React.FC<BeaconFourthOptionModalProps> = ({
+const TrackerFourthOptionModal: React.FC<TrackerFourthOptionModalProps> = ({
   isVisible,
   onClose,
   setTimeRange,
@@ -35,7 +35,7 @@ const BeaconFourthOptionModal: React.FC<BeaconFourthOptionModalProps> = ({
         />
       </Space>
     </Modal>
-  );
-};
+  )
+}
 
-export default BeaconFourthOptionModal;
+export default TrackerFourthOptionModal
