@@ -16,6 +16,7 @@ import BeaconFourthOptionModal from "./components/BeaconFourthOptionModal";
 import BeaconFifthOptionModal from "./components/BeaconFifthOptionModal";
 import TrackerThirdOptionModal from "./components/TrackerThirdOptionModal";
 import TrackerFourthOptionModal from "./components/TrackerFourthOptionModal";
+import TrackerFifthOptionModal from "./components/TrackerFifthOptionModal";
 
 export interface Beacon {
   _id: string;
@@ -74,6 +75,7 @@ const TableData = () => {
     getAllBeaconByHourRange,
     getTrackerByHourRange,
     getAllTrackersByDateRange,
+    getAllTrackersByHourRange,
   } = useTableData();
   const { getBeaconByIdFiltered } = useBeaconSecondOptionalModal();
 
@@ -252,6 +254,23 @@ const TableData = () => {
         });
     }
   }, [timeRange]);
+
+  useEffect(() => {
+    if (trackerSelectedOption === "trackerOption5") {
+      getAllTrackersByHourRange(specificDate, hourRange[0], hourRange[1])
+        .then((data) => {
+          if (data.length > 0) {
+            setTrackerData(data);
+            trackerMenuactionRef.current?.reload();
+          } else {
+            message.error("No data found for the selected range of time.");
+          }
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
+  }, [hourRange]);
 
   const handleMenuClick = (e: any) => {
     setSelectedOption(e.key);
@@ -704,6 +723,14 @@ const TableData = () => {
             isVisible={isVisible}
             onClose={handleCloseModal}
             setTimeRange={setTimeRange}
+          />
+        )}
+        {isVisible && trackerSelectedOption === "trackerOption5" && (
+          <TrackerFifthOptionModal
+            isVisible={isVisible}
+            onClose={handleCloseModal}
+            setSpecificDate={setSpecificDate}
+            setHourRange={setHourRange}
           />
         )}
       </>

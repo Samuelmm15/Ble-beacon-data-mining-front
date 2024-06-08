@@ -1,14 +1,14 @@
 import { DatePicker, Modal, Space, TimePicker } from "antd";
 import React, { Dispatch, SetStateAction } from "react";
 
-interface BeaconFifthOptionModalProps {
+interface TrackerFifthOptionModalProps {
   isVisible: boolean;
   onClose: () => void;
   setSpecificDate: Dispatch<SetStateAction<any>>;
   setHourRange: Dispatch<SetStateAction<string[]>>;
 }
 
-const BeaconFifthOptionModal: React.FC<BeaconFifthOptionModalProps> = ({
+const TrackerFifthOptionModal: React.FC<TrackerFifthOptionModalProps> = ({
   isVisible,
   onClose,
   setSpecificDate,
@@ -40,4 +40,4 @@ const BeaconFifthOptionModal: React.FC<BeaconFifthOptionModalProps> = ({
   );
 };
 
-export default BeaconFifthOptionModal;
+export default TrackerFifthOptionModal;
