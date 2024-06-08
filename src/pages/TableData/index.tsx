@@ -12,6 +12,7 @@ import TrackerFirstOptionModal from "./components/TrackerFirstOptionModal";
 import { get } from "http";
 import TrackerSecondOptionModal from "./components/TrackerSecondOptionModal";
 import BeaconThirdOptionModal from "./components/BeaconThirdOptionModal";
+import BeaconFourthOptionModal from "./components/BeaconFourthOptionModal";
 
 export interface Beacon {
   _id: string;
@@ -66,6 +67,7 @@ const TableData = () => {
     getAllTrackerIds,
     getTrackerByFiltered,
     getBeaconByHourRange,
+    getAllBeaconByDateRange,
   } = useTableData();
   const { getBeaconByIdFiltered } = useBeaconSecondOptionalModal();
 
@@ -158,6 +160,23 @@ const TableData = () => {
         });
     }
   }, [hourRange]);
+
+  useEffect(() => {
+    if (selectedOption === "option4") {
+      getAllBeaconByDateRange(beaconId, timeRange[0], timeRange[1])
+        .then((data) => {
+          if (data.length > 0) {
+            setBeaconData(data);
+            actionRef.current?.reload();
+          } else {
+            message.error("No data found for the selected range of time.");
+          }
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
+  }, [timeRange]);
 
   useEffect(() => {
     if (trackerSelectedOption === "trackerOption2") {
@@ -342,6 +361,14 @@ const TableData = () => {
       >
         <Tooltip title="3. Buscar por rango de horas.">
           3. Buscar por rango de horas.
+        </Tooltip>
+      </Menu.Item>
+      <Menu.Item
+        key="option4"
+        style={{ maxWidth: "200px", textAlign: "center" }}
+      >
+        <Tooltip title="4. Mostrar todos los beacons de un rango de tiempo.">
+          4. Mostrar todos los beacons de un rango de tiempo.
         </Tooltip>
       </Menu.Item>
     </Menu>
@@ -540,6 +567,13 @@ const TableData = () => {
             beacons={beacons}
             setSpecificDate={setSpecificDate}
             setHourRange={setHourRange}
+          />
+        )}
+        {isVisible && selectedOption === "option4" && (
+          <BeaconFourthOptionModal
+            isVisible={isVisible}
+            onClose={handleCloseModal}
+            setTimeRange={setTimeRange}
           />
         )}
         {isVisible && trackerSelectedOption === "trackerOption1" && (

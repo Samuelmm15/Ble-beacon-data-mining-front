@@ -34,12 +34,15 @@ const useTableData = () => {
   }
 
   async function getTrackerById(id: string) {
-    const response = await fetch(`https://localhost:3000/api/trackerData/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `https://localhost:3000/api/trackerData/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (response.ok) {
       const data = response.json();
@@ -65,7 +68,11 @@ const useTableData = () => {
     }
   }
 
-  async function getTrackerByFiltered(id: string, startDate: string, endDate: string) {
+  async function getTrackerByFiltered(
+    id: string,
+    startDate: string,
+    endDate: string
+  ) {
     const response = await fetch(
       `https://localhost:3000/api/trackerData/${id}?startDate=${startDate}&endDate=${endDate}`,
       {
@@ -84,9 +91,37 @@ const useTableData = () => {
     }
   }
 
-  async function getBeaconByHourRange(id: string, specificDate: string, startHour: string, endHour: string) {
+  async function getBeaconByHourRange(
+    id: string,
+    specificDate: string,
+    startHour: string,
+    endHour: string
+  ) {
     const response = await fetch(
       `https://localhost:3000/api/beacon/1?specificDate=${specificDate}&startHour=${startHour}&endHour=${endHour}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching beacon data");
+    }
+  }
+
+  async function getAllBeaconByDateRange(
+    id: string,
+    startDate: string,
+    endDate: string
+  ) {
+    const response = await fetch(
+      `https://localhost:3000/api/beacon/allBeaconsByDateRange?startDate=${startDate}&endDate=${endDate}`,
       {
         method: "GET",
         headers: {
@@ -109,7 +144,8 @@ const useTableData = () => {
     getTrackerById,
     getAllTrackerIds,
     getTrackerByFiltered,
-    getBeaconByHourRange
+    getBeaconByHourRange,
+    getAllBeaconByDateRange,
   };
 };
 
