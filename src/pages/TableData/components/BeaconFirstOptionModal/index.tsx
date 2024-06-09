@@ -22,12 +22,12 @@ const BeaconFirstOptionModal = ({
 
   return (
     <Modal
-      title="Seleccione un beacon"
+      title="Select a beacon to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}
     >
-      <Select placeholder="Seleccione un beacon" onChange={handleSelectChange}>
+      <Select placeholder="Select a beacon to start with" onChange={handleSelectChange}>
         {beacons.map((beacon) => (
           <Select.Option key={beacon} value={beacon}>
             {beacon}

@@ -24,7 +24,7 @@ const BeaconFourthOptionModal: React.FC<BeaconFourthOptionModalProps> = ({
 
   return (
     <Modal
-      title="Seleccione un rango de tiempo para todos los beacons"
+      title="Select a time range to get all the beacons"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}

@@ -32,14 +32,14 @@ const TrackerThirdOptionModal: React.FC<TrackerThirdOptionModalProps> = ({
 
   return (
     <Modal
-      title="Seleccione un tracker, una fecha y un rango de horas"
+      title="Select a tracker, a date and a time range to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}
     >
       <Space direction="vertical">
         <Select
-          placeholder="Seleccione un tracker"
+          placeholder="Select a tracker to start with"
           onChange={handleSelectChange}
         >
           {trackers.map((tracker) => (

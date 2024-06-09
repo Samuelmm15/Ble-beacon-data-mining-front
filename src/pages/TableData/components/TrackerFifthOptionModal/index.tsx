@@ -24,7 +24,7 @@ const TrackerFifthOptionModal: React.FC<TrackerFifthOptionModalProps> = ({
 
   return (
     <Modal
-      title="Seleccione una fecha y un rango de horas"
+      title="Select a date and a hours range to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}

@@ -33,14 +33,14 @@ const TrackerSecondOptionModal = ({
   };
   return (
     <Modal
-      title="Seleccione un tracker y un rango de tiempo"
+      title="Select a tracker and a time range to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}
     >
       <Space>
         <Select
-          placeholder="Seleccione un tracker"
+          placeholder="Select a tracker to start with"
           onChange={handleSelectChange}
         >
           {trackers.map((tracker) => (

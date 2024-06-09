@@ -24,7 +24,7 @@ const TrackerFourthOptionModal: React.FC<TrackerFourthOptionModalProps> = ({
 
   return (
     <Modal
-      title="Seleccione un rango de tiempo para todos los trackers"
+      title="Select a time range to get all the trackers"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}

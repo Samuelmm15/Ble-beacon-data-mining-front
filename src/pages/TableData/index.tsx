@@ -419,40 +419,40 @@ const TableData = () => {
         key="option1"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="1. Buscar por identificador.">
-          1. Buscar por identificador.
+        <Tooltip title="1. Search by Id">
+          1. Search by Id.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="option2"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="2. Buscar por rango de tiempo.">
-          2. Buscar por rango de tiempo.
+        <Tooltip title="2. Search by time range.">
+          2. Search by time range.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="option3"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="3. Buscar por rango de horas.">
-          3. Buscar por rango de horas.
+        <Tooltip title="3. Search by hours range.">
+          3. Searh by hours range.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="option4"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="4. Mostrar todos los beacons dentro de un rango de tiempo.">
-          4. Mostrar todos los beacons dentro de un rango de tiempo.
+        <Tooltip title="4. Show all beacons within a time range.">
+          4. Show all beacons within a time range.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="option5"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="5. Mostrar todos los beacons dentro de un rango de horas.">
-          5. Mostrar todos los beacons dentro de un rango de horas.
+        <Tooltip title="5. Show all beacons within a range of hours.">
+          5. Show all beacons within a range of hours.
         </Tooltip>
       </Menu.Item>
     </Menu>
@@ -478,40 +478,40 @@ const TableData = () => {
         key="trackerOption1"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="1. Buscar por identificador.">
-          1. Buscar por identificador.
+        <Tooltip title="1. Search by Id.">
+          1. Search by Id.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="trackerOption2"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="2. Buscar por rango de tiempo.">
-          2. Buscar por rango de tiempo.
+        <Tooltip title="2. Search by time range.">
+          2. Search by time range.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="trackerOption3"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="3. Buscar por rango de horas.">
-          3. Buscar por rango de horas.
+        <Tooltip title="3. Search by hours range.">
+          3. Search by hours range.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="trackerOption4"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="4. Mostrar todos los beacons dentro de un rango de tiempo.">
-          4. Mostrar todos los beacons dentro de un rango de tiempo.
+        <Tooltip title="4. Show all beacons within a time range.">
+          4. Show all beacons within a time range.
         </Tooltip>
       </Menu.Item>
       <Menu.Item
         key="trackerOption5"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="5. Mostrar todos los beacons dentro de un rango de horas.">
-          5. Mostrar todos los beacons dentro de un rango de horas.
+        <Tooltip title="5. Show all beacons within a range of hours.">
+          5. Show all beacons within a range of hours.
         </Tooltip>
       </Menu.Item>
     </Menu>

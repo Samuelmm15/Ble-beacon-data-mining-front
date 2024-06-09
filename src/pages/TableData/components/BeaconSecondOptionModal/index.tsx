@@ -34,14 +34,14 @@ const BeaconSecondOptionModal = ({
 
   return (
     <Modal
-      title="Seleccione un beacon y un rango de tiempo"
+      title="Select a beacon and a time range to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}
     >
       <Space>
         <Select
-          placeholder="Seleccione un beacon"
+          placeholder="Select a beacon to start with"
           onChange={handleSelectChange}
         >
           {beacons.map((beacon) => (

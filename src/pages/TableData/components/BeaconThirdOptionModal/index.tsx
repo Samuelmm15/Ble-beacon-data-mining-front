@@ -32,14 +32,14 @@ const BeaconThirdOptionModal: React.FC<BeaconThirdOptionModalProps> = ({
 
   return (
     <Modal
-      title="Seleccione un beacon, una fecha y un rango de horas"
+      title="Select a beacon, a date and a time range to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}
     >
       <Space direction="vertical">
         <Select
-          placeholder="Seleccione un beacon"
+          placeholder="Select a beacon to start with"
           onChange={handleSelectChange}
         >
           {beacons.map((beacon) => (

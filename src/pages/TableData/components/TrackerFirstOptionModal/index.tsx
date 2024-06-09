@@ -20,12 +20,12 @@ const TrackerFirstOptionModal = ({
 
   return (
     <Modal
-      title="Seleccione un tracker"
+      title="Select a tracker to start with"
       open={isVisible}
       onCancel={onClose}
       onOk={onClose}
     >
-      <Select placeholder="Seleccione un tracker" onChange={handleSelectChange}>
+      <Select placeholder="Select a tracker to start with" onChange={handleSelectChange}>
         {trackers.map((tracker) => (
           <Select.Option key={tracker} value={tracker}>
             {tracker}
