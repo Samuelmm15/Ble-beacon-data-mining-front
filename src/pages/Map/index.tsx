@@ -110,7 +110,7 @@ const Map = () => {
     let positionDrone: any[] = [];
     let droneId: any[] = [];
 
-    const initialTime = time; //! Si se cambia el tiempo en tiempo real también se cambian las marcas que aparecen
+    const initialTime = time;
     // eslint-disable-next-line array-callback-return
     //? Se recorren todos los beacons para mostrarlos en el mapa
     allBeacons.map((beacon: any) => {

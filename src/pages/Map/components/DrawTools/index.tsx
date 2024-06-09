@@ -3,10 +3,11 @@ import { FeatureGroup } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import useBeaconsOperations from "./hooks/useBeaconsOperations";
-import { useRef, useState } from "react";
-import { Button, Col, Modal, Row, Statistic } from "antd";
+import { useEffect, useRef, useState } from "react";
+import { Button, Col, Modal, Row, Slider, Statistic, message } from "antd";
 import { Radar } from "@ant-design/charts";
 import CSVDownload from "./components/CSVDownload";
+import moment from "moment";
 
 type DrawToolsProps = {
   time: any;
@@ -19,6 +20,11 @@ type ModalData = {
 };
 
 const DrawTools = ({ time }: DrawToolsProps) => {
+  const [sliderTime, setSliderTime] = useState<string>(time);
+  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [southWest, setSouthWest] = useState<any>();
+  const [northEast, setNorthEast] = useState<any>();
+  const [previousSliderValue, setPreviousSliderValue] = useState(sliderValue);
   const timeRef = useRef(time);
   timeRef.current = time;
 
@@ -39,8 +45,10 @@ const DrawTools = ({ time }: DrawToolsProps) => {
 
   const handleCreated = (e: any) => {
     const layer = e.layer;
-    // Obtención de los límites
+    // limits of the rectangle
     const bounds = layer.getBounds();
+    setSouthWest(bounds._southWest);
+    setNorthEast(bounds._northEast);
     handleBeaconsCounters(bounds._southWest, bounds._northEast);
   };
 
@@ -48,11 +56,45 @@ const DrawTools = ({ time }: DrawToolsProps) => {
     setVisible(false);
   };
 
+  const updateRadarChartData = async (newTime: string) => {
+    const data = await getNumberOfBeacons(southWest, northEast, newTime);
+    setModalData(data);
+  };
+
+  useEffect(() => {
+    if (previousSliderValue !== sliderValue) {
+      let newTime: any = moment(sliderTime.toString());
+      if (sliderValue > previousSliderValue) {
+        newTime = newTime.add(5, "minutes").format("YYYY-MM-DDTHH:mm:ss");
+      } else if (sliderValue < previousSliderValue) {
+        newTime = newTime.subtract(5, "minutes").format("YYYY-MM-DDTHH:mm:ss");
+      }
+      console.log(newTime);
+      setSliderTime(newTime);
+      setPreviousSliderValue(sliderValue);
+      updateRadarChartData(newTime);
+    }
+  }, [sliderValue]);
+
+  const onChange = (value: number | null) => {
+    if (value !== null) {
+      setSliderValue(value);
+    }
+  };
+
   let config;
   let renderGraph = false;
   if (modalData) {
-    // Comprueba si hay al menos un valor distinto de cero
+    // If a beacon has a star of 0, the graph will not be rendered
     renderGraph = modalData.radarChartData.some((d: any) => d.star !== 0);
+
+    if (!renderGraph) { // If there is no data, show a message
+      message.destroy();
+      message.error(
+        "No data at the selected time. Please select another time.",
+        5
+      );
+    }
 
     config = {
       data: modalData?.radarChartData.map((d: any) => ({
@@ -89,6 +131,21 @@ const DrawTools = ({ time }: DrawToolsProps) => {
       radiusAxis: {
         min: 0,
         max: 1,
+      },
+      line: {
+        visible: true,
+      },
+      point: {
+        visible: true,
+        shape: "circle",
+      },
+      legend: {
+        position: "top-right",
+        itemName: {
+          style: {
+            fill: "#000",
+          },
+        },
       },
     };
   }
@@ -148,6 +205,15 @@ const DrawTools = ({ time }: DrawToolsProps) => {
           </Col>
         </Row>
         <Col span={24}>{renderGraph && <Radar {...config} />}</Col>
+        <Row gutter={24}>
+          <Slider
+            min={0}
+            max={24}
+            onChange={onChange}
+            value={sliderValue}
+            style={{ width: "100%" }}
+          />
+        </Row>
       </Modal>
     </>
   );
