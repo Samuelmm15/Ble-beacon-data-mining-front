@@ -69,7 +69,6 @@ const DrawTools = ({ time }: DrawToolsProps) => {
       } else if (sliderValue < previousSliderValue) {
         newTime = newTime.subtract(5, "minutes").format("YYYY-MM-DDTHH:mm:ss");
       }
-      console.log(newTime);
       setSliderTime(newTime);
       setPreviousSliderValue(sliderValue);
       updateRadarChartData(newTime);

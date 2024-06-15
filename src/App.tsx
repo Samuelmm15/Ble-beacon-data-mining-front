@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import { Navigate, useLocation } from "react-router-dom";
 import TableData from "./pages/TableData";
 import ResetPassword from "./pages/ResetPassword";
+import { useState } from "react";
 
 function App() {
   const ProtectedElement = ({ element }: { element: React.ReactElement }) => {
@@ -18,6 +19,8 @@ function App() {
       <Navigate to="/login" replace state={{ from: location }} />
     );
   };
+
+  const [userName, setUserName] = useState<string>("");
 
   return (
     <div className="App bg-custom-color min-h-screen">

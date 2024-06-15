@@ -1,20 +1,39 @@
-import { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+interface HomeProps {
+  setGlobalUserName: Dispatch<SetStateAction<string>>;
+}
+
+const Home: React.FC<HomeProps> = ({ setGlobalUserName }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+
+      const payload = JSON.parse(jsonPayload);
+      const getUserName = payload.userId;
+      setUserName(getUserName);
       setIsLoggedIn(true);
     }
   }, []);
 
   return (
     <div>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar isLoggedIn={isLoggedIn} userName={userName} />
       <section className="h-screen w-full bg-center bg-no-repeat bg-[url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-gray-700 bg-blend-multiply border-none m-0 p-0 overflow-hidden">
         <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">

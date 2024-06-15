@@ -1,13 +1,20 @@
+import { Avatar, Space, Tooltip } from "antd";
+import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+interface NavBarProps {
+  isLoggedIn: boolean;
+  userName: string;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, userName }) => {
   const logo =
     require("../../img/real-time-tracking-logo-circular.png") as string;
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
     window.location.href = "https://localhost:3001/";
-  }
+  };
 
   return (
     <nav className="bg-navbar-color bg-opacity-56 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -32,13 +39,30 @@ const NavBar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
               </button>
             </Link>
           ) : (
-            <button
-              type="button"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={handleLogOut}
-            >
-              Log Out
-            </button>
+            <>
+              <Space>
+                {userName && (
+                  <>
+                    <Tooltip title={`Logged in as ${userName}`}>
+                      <Avatar
+                        size="default"
+                        shape="square"
+                        style={{ backgroundColor: "#2563eb" }}
+                      >
+                        {userName.substring(0, 2).toUpperCase()}
+                      </Avatar>
+                    </Tooltip>
+                  </>
+                )}
+                <button
+                  type="button"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  onClick={handleLogOut}
+                >
+                  Log Out
+                </button>
+              </Space>
+            </>
           )}
           <button
             data-collapse-toggle="navbar-sticky"
