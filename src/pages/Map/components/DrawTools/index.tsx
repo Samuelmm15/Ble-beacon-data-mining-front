@@ -65,9 +65,9 @@ const DrawTools = ({ time }: DrawToolsProps) => {
     if (previousSliderValue !== sliderValue) {
       let newTime: any = moment(sliderTime.toString());
       if (sliderValue > previousSliderValue) {
-        newTime = newTime.add(5, "minutes").format("YYYY-MM-DDTHH:mm:ss");
+        newTime = newTime.add(1, "minutes").format("YYYY-MM-DDTHH:mm:ss");
       } else if (sliderValue < previousSliderValue) {
-        newTime = newTime.subtract(5, "minutes").format("YYYY-MM-DDTHH:mm:ss");
+        newTime = newTime.subtract(1, "minutes").format("YYYY-MM-DDTHH:mm:ss");
       }
       setSliderTime(newTime);
       setPreviousSliderValue(sliderValue);

@@ -29,6 +29,7 @@ export interface Beacon {
     bearing: string;
     speed: string;
   };
+  rssi: number;
 }
 
 export interface Tracker {
@@ -42,7 +43,6 @@ export interface Tracker {
     bearing: string;
     speed: string;
   };
-  rssi: number;
 }
 
 interface TableDataProps {
@@ -137,7 +137,7 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
       .catch((error) => {
         message.error(error.message);
       });
-  });
+  }, []);
 
   useEffect(() => {
     if (selectedOption === "option2") {
@@ -341,6 +341,13 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
       render: (_, record) => record.location?.speed,
       sorter: true,
     },
+    {
+      title: "rssi",
+      dataIndex: "rssi",
+      key: "rssi",
+      valueType: "text",
+      sorter: true,
+    },
   ];
 
   const trackerColumns: ProColumns<Tracker>[] = [
@@ -392,13 +399,6 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
       key: "speed",
       valueType: "text",
       render: (_, record) => record.location?.speed,
-      sorter: true,
-    },
-    {
-      title: "rssi",
-      dataIndex: "rssi",
-      key: "rssi",
-      valueType: "text",
       sorter: true,
     },
   ];
@@ -567,6 +567,16 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
                           return bValue - aValue;
                         }
                       });
+                    } else if (sorter && sorter.rssi) {
+                      sortedData.sort((a, b) => {
+                        const aValue = a.rssi;
+                        const bValue = b.rssi;
+                        if (sorter.rssi === "ascend") {
+                          return aValue - bValue;
+                        } else {
+                          return bValue - aValue;
+                        }
+                      });
                     }
 
                     return {
@@ -625,16 +635,6 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
                           return bValue - aValue;
                         }
                       });
-                    } else if (sorter && sorter.rssi) {
-                      sortedData.sort((a, b) => {
-                        const aValue = a.rssi;
-                        const bValue = b.rssi;
-                        if (sorter.rssi === "ascend") {
-                          return aValue - bValue;
-                        } else {
-                          return bValue - aValue;
-                        }
-                      });
                     }
 
                     return {
@@ -673,6 +673,7 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
             isVisible={isVisible}
             onClose={handleCloseModal}
             beacons={beacons}
+            setBeaconId={setBeaconId}
             setSpecificDate={setSpecificDate}
             setHourRange={setHourRange}
           />
@@ -714,6 +715,7 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
             isVisible={isVisible}
             onClose={handleCloseModal}
             trackers={trackers}
+            setTrackerId={setTrackerId}
             setSpecificDate={setSpecificDate}
             setHourRange={setHourRange}
           />

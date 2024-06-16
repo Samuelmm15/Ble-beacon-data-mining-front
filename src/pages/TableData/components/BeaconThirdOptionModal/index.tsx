@@ -5,6 +5,7 @@ interface BeaconThirdOptionModalProps {
   isVisible: boolean;
   onClose: () => void;
   beacons: string[];
+  setBeaconId: Dispatch<SetStateAction<string>>;
   setSpecificDate: Dispatch<SetStateAction<any>>;
   setHourRange: Dispatch<SetStateAction<string[]>>;
 }
@@ -13,12 +14,14 @@ const BeaconThirdOptionModal: React.FC<BeaconThirdOptionModalProps> = ({
   isVisible,
   onClose,
   beacons,
+  setBeaconId,
   setSpecificDate,
   setHourRange,
 }) => {
   const actualBeaconId = useRef<string>("");
 
   const handleSelectChange = (value: string) => {
+    setBeaconId(value);
     actualBeaconId.current = value;
   };
 

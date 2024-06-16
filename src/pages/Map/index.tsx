@@ -23,6 +23,7 @@ interface Beacon {
     bearing: number;
     speed: number;
   };
+  rssi: number;
 }
 
 interface Drone {
@@ -35,7 +36,6 @@ interface Drone {
     bearing: number;
     speed: number;
   };
-  rssi: number;
 }
 
 interface MapProps {
@@ -75,8 +75,8 @@ const Map: React.FC<MapProps> = ({ userName }) => {
   }, []);
 
   useEffect(() => {
-    const newTime = moment("2024-05-12T10:15:00")
-      .add(sliderValue * 5, "minutes")
+    const newTime = moment("2024-05-12T11:00:00")
+      .add(sliderValue * 1, "minutes")
       .format("YYYY-MM-DDTHH:mm:ss");
     setTime(newTime);
   }, [sliderValue]);
@@ -135,7 +135,10 @@ const Map: React.FC<MapProps> = ({ userName }) => {
       }
     });
 
-    const initialPosition: LatLngTuple = [28.4916, -15.6291]; // To center the map into Canary Islands
+    const initialPosition: LatLngTuple = [
+      allBeacons.at(0)?.location.latitude ?? 28.4916,
+      allBeacons.at(0)?.location.longitude ?? -15.6291,
+    ]; // To center the map into Canary Islands
 
     return (
       <div
@@ -151,7 +154,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
         <div style={{ width: "70%", height: "70%" }}>
           <MapContainer
             center={initialPosition}
-            zoom={8}
+            zoom={30}
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
@@ -176,6 +179,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
                     <p>Altitude: {beacon?.location?.altitude}</p>
                     <p>Bearing: {beacon?.location?.bearing}</p>
                     <p>Speed: {beacon?.location?.speed}</p>
+                    <p>RSSI: {beacon?.rssi}</p>
                   </Popup>
                 </Marker>
               );
@@ -195,7 +199,6 @@ const Map: React.FC<MapProps> = ({ userName }) => {
                     <p>Altitude: {drone?.location?.altitude}</p>
                     <p>Bearing: {drone?.location?.bearing}</p>
                     <p>Speed: {drone?.location?.speed}</p>
-                    <p>RSSI: {drone?.rssi}</p>
                   </Popup>
                 </Marker>
               );
@@ -206,7 +209,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
               <Col span={18}>
                 <Slider
                   min={0}
-                  max={24}
+                  max={60}
                   onChange={onChange}
                   value={sliderValue}
                   style={{ width: "100%" }}

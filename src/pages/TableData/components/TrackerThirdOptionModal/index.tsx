@@ -5,6 +5,7 @@ interface TrackerThirdOptionModalProps {
   isVisible: boolean;
   onClose: () => void;
   trackers: string[];
+  setTrackerId: Dispatch<SetStateAction<string>>;
   setSpecificDate: Dispatch<SetStateAction<any>>;
   setHourRange: Dispatch<SetStateAction<string[]>>;
 }
@@ -13,12 +14,14 @@ const TrackerThirdOptionModal: React.FC<TrackerThirdOptionModalProps> = ({
   isVisible,
   onClose,
   trackers,
+  setTrackerId,
   setSpecificDate,
   setHourRange,
 }) => {
   const actualtrackerId = useRef<string>("");
 
   const handleSelectChange = (value: string) => {
+    setTrackerId(value);
     actualtrackerId.current = value;
   };
 
