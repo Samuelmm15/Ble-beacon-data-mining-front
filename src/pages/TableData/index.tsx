@@ -45,7 +45,11 @@ export interface Tracker {
   rssi: number;
 }
 
-const TableData = () => {
+interface TableDataProps {
+  userName: string;
+}
+
+const TableData: React.FC<TableDataProps> = ({ userName }) => {
   const actionRef = useRef<ActionType>();
   const trackerMenuactionRef = useRef<ActionType>();
 
@@ -419,9 +423,7 @@ const TableData = () => {
         key="option1"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="1. Search by Id">
-          1. Search by Id.
-        </Tooltip>
+        <Tooltip title="1. Search by Id">1. Search by Id.</Tooltip>
       </Menu.Item>
       <Menu.Item
         key="option2"
@@ -478,9 +480,7 @@ const TableData = () => {
         key="trackerOption1"
         style={{ maxWidth: "200px", textAlign: "center" }}
       >
-        <Tooltip title="1. Search by Id.">
-          1. Search by Id.
-        </Tooltip>
+        <Tooltip title="1. Search by Id.">1. Search by Id.</Tooltip>
       </Menu.Item>
       <Menu.Item
         key="trackerOption2"
@@ -523,7 +523,7 @@ const TableData = () => {
     return (
       <>
         <div>
-          <NavBar isLoggedIn={isLoggedIn} />
+          <NavBar isLoggedIn={isLoggedIn} userName={userName} />
           <div style={{ marginTop: "70px", height: "100%", width: "100%" }}>
             <ConfigProvider locale={enUS}>
               <div style={{ display: "flex", width: "100%", height: "100%" }}>

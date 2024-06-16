@@ -26,12 +26,20 @@ function App() {
     <div className="App bg-custom-color min-h-screen">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/map" element={<ProtectedElement element={<Map />} />} />
+          <Route path="/" element={<Home setGlobalUserName={setUserName} />} />
+          <Route
+            path="/home"
+            element={<Home setGlobalUserName={setUserName} />}
+          />
+          <Route
+            path="/map"
+            element={<ProtectedElement element={<Map userName={userName} />} />}
+          />
           <Route
             path="/dataBase"
-            element={<ProtectedElement element={<TableData />} />}
+            element={
+              <ProtectedElement element={<TableData userName={userName} />} />
+            }
           />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />

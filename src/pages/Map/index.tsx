@@ -2,11 +2,11 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import NavBar from "src/components/NavBar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useBeacons from "./hooks/useBeacons";
 import L from "leaflet";
 import iconoPeaton from "../../img/beacon.png";
-import IconoDron from "../../img/drone.png"
+import IconoDron from "../../img/drone.png";
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools";
@@ -38,7 +38,11 @@ interface Drone {
   rssi: number;
 }
 
-const Map = () => {
+interface MapProps {
+  userName: string;
+}
+
+const Map: React.FC<MapProps> = ({ userName }) => {
   const { getBeacons, getDrones } = useBeacons();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -61,13 +65,13 @@ const Map = () => {
         message.error(error.message);
       });
 
-      getDrones()
-        .then((data) => {
-          setAllDrones(data);
-        })
-        .catch((error) => {
-          message.error(error.message);
-        })
+    getDrones()
+      .then((data) => {
+        setAllDrones(data);
+      })
+      .catch((error) => {
+        message.error(error.message);
+      });
   }, []);
 
   useEffect(() => {
@@ -127,12 +131,9 @@ const Map = () => {
     allDrones?.map((drone: any) => {
       if (drone.time === initialTime) {
         droneId.push(drone._id);
-        positionDrone.push([
-          drone.location.latitude,
-          drone.location.longitude,
-        ]);
+        positionDrone.push([drone.location.latitude, drone.location.longitude]);
       }
-    })
+    });
 
     const initialPosition: LatLngTuple = [28.4916, -15.6291]; // To center the map into Canary Islands
 
@@ -146,7 +147,7 @@ const Map = () => {
           height: "100vh",
         }}
       >
-        <NavBar isLoggedIn={isLoggedIn} />
+        <NavBar isLoggedIn={isLoggedIn} userName={userName} />
         <div style={{ width: "70%", height: "70%" }}>
           <MapContainer
             center={initialPosition}

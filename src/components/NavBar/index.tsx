@@ -47,7 +47,7 @@ const NavBar: React.FC<NavBarProps> = ({ isLoggedIn, userName }) => {
                       <Avatar
                         size="default"
                         shape="square"
-                        style={{ backgroundColor: "#2563eb" }}
+                        style={{ backgroundColor: "#717D7E  " }}
                       >
                         {userName.substring(0, 2).toUpperCase()}
                       </Avatar>

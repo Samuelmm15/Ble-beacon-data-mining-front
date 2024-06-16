@@ -27,6 +27,7 @@ const Home: React.FC<HomeProps> = ({ setGlobalUserName }) => {
       const payload = JSON.parse(jsonPayload);
       const getUserName = payload.userId;
       setUserName(getUserName);
+      setGlobalUserName(getUserName);
       setIsLoggedIn(true);
     }
   }, []);
