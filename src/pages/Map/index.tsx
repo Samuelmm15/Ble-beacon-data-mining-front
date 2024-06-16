@@ -140,10 +140,10 @@ const Map: React.FC<MapProps> = ({ userName }) => {
 
   const customIcon = L.icon({
     iconUrl: iconoPeaton,
-    iconSize: [38 / 2, 95 / 3], // Icon size
-    iconAnchor: [22 / 3, 94 / 3], // point of the icon that will correspond to the marker's location
-    popupAnchor: [0, -76 + 40], // point of the render of the popup
-  });
+    iconSize: [12, 12], // Icon size
+    iconAnchor: [15, 15], // point of the icon that will correspond to the marker's location
+    popupAnchor: [0, -15], // point of the render of the popup
+});
 
   const droneIcon = L.icon({
     iconUrl: IconoDron,
