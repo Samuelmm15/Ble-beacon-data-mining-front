@@ -33,7 +33,26 @@ const useBeacons = () => {
     }
   }
 
-  return { getBeacons, getDrones };
+  async function getHistoryBeacon(beaconId: number, time: string) {
+    const response = await fetch(
+      `https://localhost:3000/api/beacon/beaconsByBeforeTime/${beaconId}?time=${time}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = response.json();
+      return data;
+    } else {
+      throw new Error("Error fetching beacons data");
+    }
+  }
+
+  return { getBeacons, getDrones, getHistoryBeacon };
 };
 
 export default useBeacons;

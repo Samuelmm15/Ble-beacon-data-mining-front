@@ -1,4 +1,10 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+} from "react-leaflet";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import NavBar from "src/components/NavBar";
@@ -11,7 +17,7 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools";
 import moment from "moment";
-import { Col, DatePicker, Row, Slider, Spin, message } from "antd";
+import { Button, Col, DatePicker, Row, Slider, Spin, message } from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -43,13 +49,21 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ userName }) => {
-  const { getBeacons, getDrones } = useBeacons();
+  const { getBeacons, getDrones, getHistoryBeacon } = useBeacons();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [allBeacons, setAllBeacons] = useState<Beacon[] | undefined>(undefined);
   const [allDrones, setAllDrones] = useState<Drone[] | undefined>(undefined);
   const [time, setTime] = useState<string>("2024-05-12T10:15:00");
   const [sliderValue, setSliderValue] = useState<number>(0);
+  const [selectedBeacon, setSelectedBeacon] = useState<number | undefined>(
+    undefined
+  );
+  const [selectedTime, setSelectedTime] = useState<string | undefined>(
+    undefined
+  );
+  const [beaconTrack, setBeaconTrack] = useState<any[] | undefined>(undefined);
+  const [positions, setPositions] = useState<any>(undefined);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -80,6 +94,36 @@ const Map: React.FC<MapProps> = ({ userName }) => {
       .format("YYYY-MM-DDTHH:mm:ss");
     setTime(newTime);
   }, [sliderValue]);
+
+  useEffect(() => {
+    if (selectedBeacon && selectedTime !== undefined) {
+      getHistoryBeacon(selectedBeacon, selectedTime)
+        .then((data) => {
+          if (data.length > 1) {
+            setBeaconTrack(data);
+          } else {
+            message.error("No data available for the selected beacon");
+          }
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    }
+  }, [selectedBeacon, selectedTime]);
+
+  useEffect(() => {
+    if (beaconTrack !== undefined && beaconTrack.length > 1) {
+      let auxPositions: any[] = [];
+      beaconTrack.map((beacon: any) => {
+        auxPositions.push({
+          lat: beacon.location.latitude,
+          lng: beacon.location.longitude,
+        });
+      });
+      setPositions(auxPositions);
+      console.log(auxPositions);
+    }
+  }, [beaconTrack]);
 
   const onChange = (value: number | null) => {
     if (value !== null) {
@@ -180,10 +224,25 @@ const Map: React.FC<MapProps> = ({ userName }) => {
                     <p>Bearing: {beacon?.location?.bearing}</p>
                     <p>Speed: {beacon?.location?.speed}</p>
                     <p>RSSI: {beacon?.rssi}</p>
+                    <Button
+                      onClick={() => {
+                        setSelectedBeacon(beacon?.beaconId);
+                        setSelectedTime(beacon?.time);
+                      }}
+                    >
+                      Generate the beacon track
+                    </Button>
                   </Popup>
                 </Marker>
               );
             })}
+            {selectedBeacon !== undefined &&
+              selectedTime !== undefined &&
+              beaconTrack !== undefined &&
+              beaconTrack.length > 1 &&
+              positions !== undefined && (
+                <Polyline positions={positions} color="#8E44AD" weight={2} />
+              )}
             {positionDrone.map((position: any, index: number) => {
               const drone = allDrones?.find(
                 (b: any) => b._id === droneId[index]
