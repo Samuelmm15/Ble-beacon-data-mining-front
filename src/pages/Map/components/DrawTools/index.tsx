@@ -62,6 +62,12 @@ const DrawTools = ({ time }: DrawToolsProps) => {
   };
 
   useEffect(() => {
+    setSliderTime(time);
+    setSliderValue(0);
+    setPreviousSliderValue(0);
+  }, [time])
+
+  useEffect(() => {
     if (previousSliderValue !== sliderValue) {
       let newTime: any = moment(sliderTime.toString());
       if (sliderValue > previousSliderValue) {
