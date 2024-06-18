@@ -17,7 +17,16 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet.fullscreen/Control.FullScreen.css";
 import DrawTools from "./components/DrawTools";
 import moment from "moment";
-import { Button, Col, DatePicker, Row, Slider, Spin, message } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Modal,
+  Row,
+  Slider,
+  Spin,
+  message,
+} from "antd";
 
 interface Beacon {
   beaconId: number;
@@ -64,6 +73,8 @@ const Map: React.FC<MapProps> = ({ userName }) => {
   );
   const [beaconTrack, setBeaconTrack] = useState<any[] | undefined>(undefined);
   const [positions, setPositions] = useState<any>(undefined);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [showPolyline, setShowPolyline] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -121,7 +132,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
         });
       });
       setPositions(auxPositions);
-      console.log(auxPositions);
+      setShowPolyline(true);
     }
   }, [beaconTrack]);
 
@@ -138,12 +149,27 @@ const Map: React.FC<MapProps> = ({ userName }) => {
     }
   };
 
+  const handleClickOnPolyline = () => {
+    setIsVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsVisible(false);
+  };
+
+  const handleOk = () => {
+    setShowPolyline(false);
+    setIsVisible(false);
+    setSelectedBeacon(undefined);
+    setSelectedTime(undefined);
+  };
+
   const customIcon = L.icon({
     iconUrl: iconoPeaton,
     iconSize: [12, 12], // Icon size
     iconAnchor: [15, 15], // point of the icon that will correspond to the marker's location
     popupAnchor: [0, -15], // point of the render of the popup
-});
+  });
 
   const droneIcon = L.icon({
     iconUrl: IconoDron,
@@ -185,112 +211,141 @@ const Map: React.FC<MapProps> = ({ userName }) => {
     ]; // To center the map into Canary Islands
 
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-        }}
-      >
-        <NavBar isLoggedIn={isLoggedIn} userName={userName} />
-        <div style={{ width: "70%", height: "70%" }}>
-          <MapContainer
-            center={initialPosition}
-            zoom={30}
-            scrollWheelZoom={true}
-            style={{ height: "100%", width: "100%" }}
-          >
-            <FullscreenControl position="topleft" />
-            <DrawTools time={time} />
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {positionVector.map((position: any, index: number) => {
-              const beacon = allBeacons.find(
-                (b: any) => b._id === beaconId[index]
-              );
-              return (
-                <Marker position={position} icon={customIcon}>
-                  <Popup>
-                    <p>
-                      Time: {moment(beacon?.time).format("DD/MM/YYYY HH:mm:ss")}
-                    </p>
-                    <p>Latitude: {beacon?.location?.latitude}</p>
-                    <p>Longitude: {beacon?.location?.longitude}</p>
-                    <p>Altitude: {beacon?.location?.altitude}</p>
-                    <p>Bearing: {beacon?.location?.bearing}</p>
-                    <p>Speed: {beacon?.location?.speed}</p>
-                    <p>RSSI: {beacon?.rssi}</p>
-                    <Button
-                      onClick={() => {
-                        setSelectedBeacon(beacon?.beaconId);
-                        setSelectedTime(beacon?.time);
-                      }}
-                    >
-                      Generate the beacon track
-                    </Button>
-                  </Popup>
-                </Marker>
-              );
-            })}
-            {selectedBeacon !== undefined &&
-              selectedTime !== undefined &&
-              beaconTrack !== undefined &&
-              beaconTrack.length > 1 &&
-              positions !== undefined && (
-                <Polyline positions={positions} color="#8E44AD" weight={2} />
-              )}
-            {positionDrone.map((position: any, index: number) => {
-              const drone = allDrones?.find(
-                (b: any) => b._id === droneId[index]
-              );
-              return (
-                <Marker position={position} icon={droneIcon}>
-                  <Popup>
-                    <p>
-                      Time: {moment(drone?.time).format("DD/MM/YYYY HH:mm:ss")}
-                    </p>
-                    <p>Latitude: {drone?.location?.latitude}</p>
-                    <p>Longitude: {drone?.location?.longitude}</p>
-                    <p>Altitude: {drone?.location?.altitude}</p>
-                    <p>Bearing: {drone?.location?.bearing}</p>
-                    <p>Speed: {drone?.location?.speed}</p>
-                  </Popup>
-                </Marker>
-              );
-            })}
-          </MapContainer>
-          <div style={{ width: "100%", marginTop: "20px" }}>
-            <Row>
-              <Col span={18}>
-                <Slider
-                  min={0}
-                  max={60}
-                  onChange={onChange}
-                  value={sliderValue}
-                  style={{ width: "100%" }}
-                />
-              </Col>
-              <Col span={5}>
-                <DatePicker
-                  showTime={{ format: "HH:mm:ss" }}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  value={
-                    typeof time === "string"
-                      ? moment(time, "YYYY-MM-DD HH:mm:ss")
-                      : null
-                  }
-                  onChange={onDateChange}
-                  style={{ margin: "0 40px", width: "100%" }}
-                />
-              </Col>
-            </Row>
+      <>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+          }}
+        >
+          <NavBar isLoggedIn={isLoggedIn} userName={userName} />
+          <div style={{ width: "70%", height: "70%" }}>
+            <MapContainer
+              center={initialPosition}
+              zoom={30}
+              scrollWheelZoom={true}
+              style={{ height: "100%", width: "100%" }}
+            >
+              <FullscreenControl position="topleft" />
+              <DrawTools time={time} />
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {positionVector.map((position: any, index: number) => {
+                const beacon = allBeacons.find(
+                  (b: any) => b._id === beaconId[index]
+                );
+                return (
+                  <Marker position={position} icon={customIcon}>
+                    <Popup>
+                      <p>
+                        Time:{" "}
+                        {moment(beacon?.time).format("DD/MM/YYYY HH:mm:ss")}
+                      </p>
+                      <p>Latitude: {beacon?.location?.latitude}</p>
+                      <p>Longitude: {beacon?.location?.longitude}</p>
+                      <p>Altitude: {beacon?.location?.altitude}</p>
+                      <p>Bearing: {beacon?.location?.bearing}</p>
+                      <p>Speed: {beacon?.location?.speed}</p>
+                      <p>RSSI: {beacon?.rssi}</p>
+                      <Button
+                        onClick={() => {
+                          setSelectedBeacon(beacon?.beaconId);
+                          setSelectedTime(beacon?.time);
+                        }}
+                      >
+                        Generate the beacon track
+                      </Button>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+              {showPolyline &&
+                selectedBeacon !== undefined &&
+                selectedTime !== undefined &&
+                beaconTrack !== undefined &&
+                beaconTrack.length > 1 &&
+                positions !== undefined && (
+                  <Polyline
+                    positions={positions}
+                    color="#8E44AD"
+                    weight={5}
+                    opacity={50}
+                    interactive
+                    eventHandlers={{
+                      click: () => {
+                        handleClickOnPolyline();
+                      },
+                    }}
+                  />
+                )}
+              {positionDrone.map((position: any, index: number) => {
+                const drone = allDrones?.find(
+                  (b: any) => b._id === droneId[index]
+                );
+                return (
+                  <Marker position={position} icon={droneIcon}>
+                    <Popup>
+                      <p>
+                        Time:{" "}
+                        {moment(drone?.time).format("DD/MM/YYYY HH:mm:ss")}
+                      </p>
+                      <p>Latitude: {drone?.location?.latitude}</p>
+                      <p>Longitude: {drone?.location?.longitude}</p>
+                      <p>Altitude: {drone?.location?.altitude}</p>
+                      <p>Bearing: {drone?.location?.bearing}</p>
+                      <p>Speed: {drone?.location?.speed}</p>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+            </MapContainer>
+            <div style={{ width: "100%", marginTop: "20px" }}>
+              <Row>
+                <Col span={18}>
+                  <Slider
+                    min={0}
+                    max={60}
+                    onChange={onChange}
+                    value={sliderValue}
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+                <Col span={5}>
+                  <DatePicker
+                    showTime={{ format: "HH:mm:ss" }}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    value={
+                      typeof time === "string"
+                        ? moment(time, "YYYY-MM-DD HH:mm:ss")
+                        : null
+                    }
+                    onChange={onDateChange}
+                    style={{ margin: "0 40px", width: "100%" }}
+                  />
+                </Col>
+              </Row>
+            </div>
           </div>
         </div>
-      </div>
+        <Modal
+          title="Beacon Track"
+          open={isVisible}
+          onCancel={() => {
+            handleCancel();
+          }}
+          onOk={() => {
+            handleOk();
+          }}
+          centered
+        >
+          <p>¿Do you want to delete the beacon track?</p>
+        </Modal>
+      </>
     );
   } else {
     return (
