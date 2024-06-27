@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import { Link } from "react-router-dom";
+import { message } from "antd";
 
 interface HomeProps {
   setGlobalUserName: Dispatch<SetStateAction<string>>;
@@ -31,6 +32,16 @@ const Home: React.FC<HomeProps> = ({ setGlobalUserName }) => {
       setIsLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (payload.firstCreation) {
+        window.location.href = "https://localhost:3001/reset-password";
+      }
+    }
+  }, [])
 
   return (
     <div>

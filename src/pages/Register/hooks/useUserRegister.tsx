@@ -1,13 +1,13 @@
 import React from "react";
 
 const useUserRegister = () => {
-  async function setRegister(name: string, email: string, password: string, admin: boolean) {
+  async function setRegister(name: string, email: string, password: string, admin: boolean, firstCreation: boolean) {
     const response = await fetch("https://localhost:3000/api/user/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password, admin }),
+      body: JSON.stringify({ name, email, password, admin, firstCreation }),
     });
 
     if (response.ok) {

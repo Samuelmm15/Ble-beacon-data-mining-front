@@ -15,19 +15,27 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [firstCreation, setFirstCreation] = useState<boolean>(false);
+  const [hasMessageBeenShown, setHasMessageBeenShown] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      navigate("/home");
-    } else {
+    const localToken = localStorage.getItem("token");
+    if (localToken) {
+      const payload = JSON.parse(atob(localToken.split(".")[1]));
+      if (payload.firstCreation) {
+        setIsValid(true);
+        setFirstCreation(true);
+      }
+    }
+    if (token) {
       const currentDateTime = new Date().toISOString();
       validateToken(token, currentDateTime)
         .then((data) => {
-          if (data === 'true') {
+          if (data === "true") {
             setIsValid(true);
-          } else if (data === 'false') {
+          } else if (data === "false") {
             setIsValid(false);
           }
         })
@@ -35,7 +43,16 @@ const ResetPassword = () => {
           message.error(error.message);
         });
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    if (firstCreation && !hasMessageBeenShown) {
+      message.info(
+        "Since this is the first login, you must change the password."
+      );
+      setHasMessageBeenShown(true);
+    }
+  }, [firstCreation, hasMessageBeenShown]);
 
   const handlePasswordChange = (e: any) => {
     const newPassword = e.target.value;
@@ -64,18 +81,18 @@ const ResetPassword = () => {
       return;
     } else {
       resetPassword(email, password)
-      .then((data) => {
-        message.success(data.message);
-        navigate("/login");
-      })
-      .catch((error) => {
-        message.error(error.message);
-      })
+        .then((data) => {
+          message.success(data.message);
+          navigate("/login");
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
     }
   };
 
   if (!isValid) {
-    return <Spin size="large" fullscreen/>;
+    return <Spin size="large" fullscreen />;
   } else {
     return (
       <section className="h-screen overflow-auto min-h-screen bg-navbar-color bg-opacity-56 dark:bg-navbar-color dark:bg-opacity-55">

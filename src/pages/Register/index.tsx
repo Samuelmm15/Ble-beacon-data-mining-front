@@ -31,7 +31,7 @@ const Register = () => {
       message.error("Password does not meet the requirements");
       return;
     } else {
-      setRegister(name, email, password, false)
+      setRegister(name, email, password, false, true)
         .then((data) => {
           message.success("User created successfully");
           navigate("/home");

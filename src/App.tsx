@@ -9,18 +9,18 @@ import ResetPassword from "./pages/ResetPassword";
 import { useState } from "react";
 
 function App() {
+  const [userName, setUserName] = useState<string>("");
+
   const ProtectedElement = ({ element }: { element: React.ReactElement }) => {
     const location = useLocation();
     const isAuthenticated = localStorage.getItem("token") !== null;
 
-    return isAuthenticated ? (
-      element
-    ) : (
-      <Navigate to="/login" replace state={{ from: location }} />
-    );
-  };
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace state={{ from: location }} />;
+    }
 
-  const [userName, setUserName] = useState<string>("");
+    return element;
+  };
 
   return (
     <div className="App bg-custom-color min-h-screen">
@@ -44,6 +44,7 @@ function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </div>
