@@ -6,10 +6,8 @@ import { Spin, message, ConfigProvider, Menu, Typography, Tooltip } from "antd";
 import enUS from "antd/lib/locale/en_US";
 import BeaconFirstOptionModal from "./components/BeaconFirstOptionModal";
 import BeaconSecondOptionModal from "./components/BeaconSecondOptionModal";
-import moment from "moment";
 import useBeaconSecondOptionalModal from "./components/BeaconSecondOptionModal/hooks/useBeaconSecondOptionalModal";
 import TrackerFirstOptionModal from "./components/TrackerFirstOptionModal";
-import { get } from "http";
 import TrackerSecondOptionModal from "./components/TrackerSecondOptionModal";
 import BeaconThirdOptionModal from "./components/BeaconThirdOptionModal";
 import BeaconFourthOptionModal from "./components/BeaconFourthOptionModal";
@@ -278,10 +276,12 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
 
   const handleMenuClick = (e: any) => {
     setSelectedOption(e.key);
+    setTrackerSelectedOption("beaconOption0");
     setIsVisible(true);
   };
 
   const handleTrackerMenuClick = (e: any) => {
+    setSelectedOption("trackerOption0");
     setTrackerSelectedOption(e.key);
     setIsVisible(true);
   };
