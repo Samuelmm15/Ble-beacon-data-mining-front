@@ -26,7 +26,7 @@ function App() {
     <div className="App bg-custom-color min-h-screen">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home setGlobalUserName={setUserName} />} />
+          <Route path="/" element={<LogIn />} />
           <Route
             path="/home"
             element={<Home setGlobalUserName={setUserName} />}

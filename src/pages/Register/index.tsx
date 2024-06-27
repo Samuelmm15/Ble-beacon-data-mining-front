@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useUserRegister from "./hooks/useUserRegister";
 import { message } from "antd";
 
@@ -20,18 +20,6 @@ const Register = () => {
   const handlePasswordChange = (e: any) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-
-    if (newPassword.length < 8) {
-      setPasswordError("La contraseña debe tener al menos 8 caracteres");
-    } else if (!/\d/.test(newPassword)) {
-      setPasswordError("La contraseña debe contener al menos un número");
-    } else if (!/[A-Z]/.test(newPassword)) {
-      setPasswordError(
-        "La contraseña debe contener al menos una letra mayúscula"
-      );
-    } else {
-      setPasswordError("");
-    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,7 +31,7 @@ const Register = () => {
       message.error("Password does not meet the requirements");
       return;
     } else {
-      setRegister(name, email, password)
+      setRegister(name, email, password, false)
         .then((data) => {
           message.success("User created successfully");
           navigate("/home");
@@ -58,7 +46,7 @@ const Register = () => {
     <section className="h-screen overflow-auto min-h-screen bg-navbar-color bg-opacity-56 dark:bg-navbar-color dark:bg-opacity-55">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto transform mt-20 md:h-screen lg:py-0 md:-translate-y-10">
         <a
-          href="/"
+          href="/home"
           className="flex flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <img
@@ -136,7 +124,7 @@ const Register = () => {
               >
                 Create an account
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              {/* <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <Link
                   to={"/login"}
@@ -144,7 +132,7 @@ const Register = () => {
                 >
                   Login here
                 </Link>
-              </p>
+              </p> */}
             </form>
           </div>
         </div>
