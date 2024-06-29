@@ -41,7 +41,7 @@ const Home: React.FC<HomeProps> = ({ setGlobalUserName }) => {
         window.location.href = "https://localhost:3001/reset-password";
       }
     }
-  }, [])
+  }, []);
 
   return (
     <div>
@@ -49,16 +49,14 @@ const Home: React.FC<HomeProps> = ({ setGlobalUserName }) => {
       <section className="h-screen w-full bg-center bg-no-repeat bg-[url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-gray-700 bg-blend-multiply border-none m-0 p-0 overflow-hidden">
         <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
-            Soar towards innovation: BLE and drones taking technology to new
-            heights.
+            RTDT - Real Time Drone Tracking
           </h1>
           <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
-            Our application immerses you in the exciting world of BLE technology
-            applied to drones. With BLE, drones become powerful tracking tools,
-            allowing you to locate and monitor beacons and transmitters from
-            anywhere. Join us in this thrilling technological adventure and
-            discover how we are transforming the way we interact with our
-            environment.
+            Application for drone tracking in security and
+            emergency scenarios. It's a valuable tool in security and
+            emergency situations, enhancing response capability, personnel
+            safety, and the effectiveness of rescue and damage assessment
+            operations.
           </p>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <Link
