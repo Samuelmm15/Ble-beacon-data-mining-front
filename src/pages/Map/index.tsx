@@ -27,6 +27,7 @@ import {
   Spin,
   message,
 } from "antd";
+import Joyride from "react-joyride";
 
 interface Beacon {
   beaconId: number;
@@ -75,6 +76,34 @@ const Map: React.FC<MapProps> = ({ userName }) => {
   const [positions, setPositions] = useState<any>(undefined);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [showPolyline, setShowPolyline] = useState<boolean>(false);
+  const [runTour, setRunTour] = useState(false);
+
+  const steps = [
+    {
+      target: "#map",
+      content: "This is the map where you can see the beacons and drones",
+    },
+    {
+      target: "#map",
+      content: "Beacons are represented by circle filled red icons and Trackers are represented by drone pruple icons",
+    },
+    {
+      target: "#map",
+      content: "There is a right panel with tools to draw on the map and see some statistics of the different beacons that are contained into the drawn area",
+    },
+    {
+      target: "#map",
+      content: "There is a left panel with a full screen button to see the map in full screen and the scale options to zoom in and out",
+    },
+    {
+      target: "#sliderTime",
+      content: "This slider allows you to move through the time and see the beacons and drones in the selected time in a period of a minute",
+    },
+    {
+      target: "#datePicker",
+      content: "This date picker allows you to select a specific time and see the beacons and drones in that time",
+    },
+  ];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -135,6 +164,10 @@ const Map: React.FC<MapProps> = ({ userName }) => {
       setShowPolyline(true);
     }
   }, [beaconTrack]);
+
+  useEffect(() => {
+    setRunTour(true);
+  }, []);
 
   const onChange = (value: number | null) => {
     if (value !== null) {
@@ -224,13 +257,16 @@ const Map: React.FC<MapProps> = ({ userName }) => {
           <NavBar isLoggedIn={isLoggedIn} userName={userName} />
           <div style={{ width: "70%", height: "70%" }}>
             <MapContainer
+              id="map"
               center={initialPosition}
               zoom={30}
               scrollWheelZoom={true}
               style={{ height: "100%", width: "100%" }}
             >
               <FullscreenControl position="topleft" />
-              <DrawTools time={time} />
+              <div id="tools">
+                <DrawTools time={time} />
+              </div>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -240,7 +276,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
                   (b: any) => b._id === beaconId[index]
                 );
                 return (
-                  <Marker position={position} icon={customIcon}>
+                  <Marker key={"beacons"} position={position} icon={customIcon}>
                     <Popup>
                       <p>
                         Time:{" "}
@@ -308,6 +344,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
               <Row>
                 <Col span={18}>
                   <Slider
+                    id="sliderTime"
                     min={0}
                     max={60}
                     onChange={onChange}
@@ -317,6 +354,7 @@ const Map: React.FC<MapProps> = ({ userName }) => {
                 </Col>
                 <Col span={5}>
                   <DatePicker
+                    id="datePicker"
                     showTime={{ format: "HH:mm:ss" }}
                     format="YYYY-MM-DD HH:mm:ss"
                     value={
@@ -345,6 +383,17 @@ const Map: React.FC<MapProps> = ({ userName }) => {
         >
           <p>¿Do you want to delete the beacon track?</p>
         </Modal>
+        <Joyride
+          steps={steps}
+          run={runTour} // Controla si el tour está activo
+          continuous={true} // Permite que el tour continúe automáticamente al siguiente paso
+          showSkipButton={true} // Muestra un botón para saltar el tour
+          styles={{
+            options: {
+              zIndex: 10000, // Asegura que el tour esté por encima de otros elementos
+            },
+          }}
+        />
       </>
     );
   } else {
