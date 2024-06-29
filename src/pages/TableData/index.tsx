@@ -15,6 +15,7 @@ import BeaconFifthOptionModal from "./components/BeaconFifthOptionModal";
 import TrackerThirdOptionModal from "./components/TrackerThirdOptionModal";
 import TrackerFourthOptionModal from "./components/TrackerFourthOptionModal";
 import TrackerFifthOptionModal from "./components/TrackerFifthOptionModal";
+import Joyride from "react-joyride";
 
 export interface Beacon {
   _id: string;
@@ -65,6 +66,30 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
   const [timeRange, setTimeRange] = useState<string[]>([""]);
   const [specificDate, setSpecificDate] = useState<string>("");
   const [hourRange, setHourRange] = useState<string[]>([""]);
+  const [runTour, setRunTour] = useState(false);
+
+  const steps = [
+    {
+      target: "#beaconTable",
+      content:
+        "This table contains the different registers of the beacon data at the data base",
+    },
+    {
+      target: "#beaconMenu",
+      content:
+        "This menu contains the different filters to aply to the beacon data",
+    },
+    {
+      target: "#trackerTable",
+      content:
+        "This table contains the different registers of the tracker data at the data base",
+    },
+    {
+      target: "#trackerMenu",
+      content:
+        "This menu contains the different filters to aply to the tracker data",
+    },
+  ];
 
   const {
     getBeaconById,
@@ -80,6 +105,10 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
     getAllTrackersByHourRange,
   } = useTableData();
   const { getBeaconByIdFiltered } = useBeaconSecondOptionalModal();
+
+  useEffect(() => {
+    setRunTour(true);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -405,6 +434,7 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
 
   const menu = (
     <Menu
+      id="beaconMenu"
       onClick={handleMenuClick}
       style={{
         display: "flex",
@@ -462,6 +492,7 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
 
   const trackerMenu = (
     <Menu
+      id="trackerMenu"
       onClick={handleTrackerMenuClick}
       style={{
         display: "flex",
@@ -526,7 +557,10 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
           <NavBar isLoggedIn={isLoggedIn} userName={userName} />
           <div style={{ marginTop: "70px", height: "100%", width: "100%" }}>
             <ConfigProvider locale={enUS}>
-              <div style={{ display: "flex", width: "100%", height: "100%" }}>
+              <div
+                id="beaconTable"
+                style={{ display: "flex", width: "100%", height: "100%" }}
+              >
                 {menu}
                 <ProTable<Beacon>
                   columns={columns}
@@ -594,7 +628,7 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
           </div>
           <div style={{ height: "100%", width: "100%" }}>
             <ConfigProvider locale={enUS}>
-              <div style={{ display: "flex", width: "100%", height: "100%" }}>
+              <div id="trackerTable" style={{ display: "flex", width: "100%", height: "100%" }}>
                 {trackerMenu}
                 <ProTable<Tracker>
                   columns={trackerColumns}
@@ -735,6 +769,17 @@ const TableData: React.FC<TableDataProps> = ({ userName }) => {
             setHourRange={setHourRange}
           />
         )}
+        <Joyride
+          steps={steps}
+          run={runTour} // Controla si el tour está activo
+          continuous={true} // Permite que el tour continúe automáticamente al siguiente paso
+          showSkipButton={true} // Muestra un botón para saltar el tour
+          styles={{
+            options: {
+              zIndex: 10000, // Asegura que el tour esté por encima de otros elementos
+            },
+          }}
+        />
       </>
     );
   }
