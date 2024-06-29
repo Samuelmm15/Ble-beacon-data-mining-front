@@ -85,23 +85,28 @@ const Map: React.FC<MapProps> = ({ userName }) => {
     },
     {
       target: "#map",
-      content: "Beacons are represented by circle filled red icons and Trackers are represented by drone pruple icons",
+      content:
+        "Beacons are represented by circle filled red icons and Trackers are represented by drone pruple icons",
     },
     {
       target: "#map",
-      content: "There is a right panel with tools to draw on the map and see some statistics of the different beacons that are contained into the drawn area",
+      content:
+        "There is a right panel with tools to draw on the map and see some statistics of the different beacons that are contained into the drawn area",
     },
     {
       target: "#map",
-      content: "There is a left panel with a full screen button to see the map in full screen and the scale options to zoom in and out",
+      content:
+        "There is a left panel with a full screen button to see the map in full screen and the scale options to zoom in and out",
     },
     {
       target: "#sliderTime",
-      content: "This slider allows you to move through the time and see the beacons and drones in the selected time in a period of a minute",
+      content:
+        "This slider allows you to move through the time and see the beacons and drones in the selected time in a period of a minute",
     },
     {
       target: "#datePicker",
-      content: "This date picker allows you to select a specific time and see the beacons and drones in that time",
+      content:
+        "This date picker allows you to select a specific time and see the beacons and drones in that time",
     },
   ];
 
@@ -343,14 +348,15 @@ const Map: React.FC<MapProps> = ({ userName }) => {
             <div style={{ width: "100%", marginTop: "20px" }}>
               <Row>
                 <Col span={18}>
-                  <Slider
-                    id="sliderTime"
-                    min={0}
-                    max={60}
-                    onChange={onChange}
-                    value={sliderValue}
-                    style={{ width: "100%" }}
-                  />
+                  <div id="sliderTime">
+                    <Slider
+                      min={0}
+                      max={60}
+                      onChange={onChange}
+                      value={sliderValue}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
                 </Col>
                 <Col span={5}>
                   <DatePicker
