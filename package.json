@@ -28,6 +28,8 @@
     "flowbite": "^2.3.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.1.0",
+    "jsdom-global": "^3.0.2",
     "json2csv": "6.0.0-alpha.2",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
