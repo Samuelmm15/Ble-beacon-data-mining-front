@@ -1,72 +1,29 @@
-// import React from 'react';
-// import { render, screen } from '@testing-library/react';
-// import { MemoryRouter } from 'react-router-dom';
-// import Home from '../index';
-// import NavBar from '../../../components/NavBar';
+import React from 'react';
+import { shallow, ShallowWrapper } from 'enzyme';
+import Home from '..';
+import NavBar from 'src/components/NavBar';
 
-// // Mock the NavBar component
-// jest.mock('../../../components/NavBar', () => ({
-//   __esModule: true,
-//   default: ({ isLoggedIn }: { isLoggedIn: boolean }) => (
-//     <div data-testid="navbar">
-//       {isLoggedIn ? 'Logged In' : 'Logged Out'}
-//     </div>
-//   )
-// }));
+describe('Home Component', () => {
+  let wrapper: ShallowWrapper;
 
-// describe('Home component', () => {
-//   beforeEach(() => {
-//     localStorage.clear();
-//   });
+  beforeEach(() => {
+    const mockSetGlobalUserName = jest.fn();
+    wrapper = shallow(<Home setGlobalUserName={mockSetGlobalUserName} />);
+  });
 
-//   test('renders correctly', () => {
-//     render(
-//       <MemoryRouter>
-//         <Home />
-//       </MemoryRouter>
-//     );
+  test('should render without errors', () => {
+    expect(wrapper.exists()).toBe(true);
+  });
 
-//     // Check if the main elements are rendered
-//     expect(screen.getByText(/Soar towards innovation/i)).toBeInTheDocument();
-//     expect(screen.getByText(/BLE and drones taking technology to new heights/i)).toBeInTheDocument();
-//     expect(screen.getByText(/Get started/i)).toBeInTheDocument();
-//   });
+  test('should render the NavBar component', () => {
+    expect(wrapper.find(NavBar).length).toBe(1);
+  });
 
-//   test('checks if user is logged in', () => {
-//     localStorage.setItem('token', 'test-token');
-//     render(
-//       <MemoryRouter>
-//         <Home />
-//       </MemoryRouter>
-//     );
+  test('should display the correct title', () => {
+    const titleText = wrapper.find('h1').text();
+    expect(titleText).toContain('RTDT - Real Time Drone Tracking');
+  });
 
-//     // Check if NavBar receives the correct prop when user is logged in
-//     expect(screen.getByTestId('navbar')).toHaveTextContent('Logged In');
-//   });
-
-//   test('checks if user is logged out', () => {
-//     render(
-//       <MemoryRouter>
-//         <Home />
-//       </MemoryRouter>
-//     );
-
-//     // Check if NavBar receives the correct prop when user is logged out
-//     expect(screen.getByTestId('navbar')).toHaveTextContent('Logged Out');
-//   });
-
-//   test('checks the presence of the link with correct properties', () => {
-//     render(
-//       <MemoryRouter>
-//         <Home />
-//       </MemoryRouter>
-//     );
-
-//     const link = screen.getByRole('link', { name: /Get started/i });
-//     expect(link).toBeInTheDocument();
-//     expect(link).toHaveAttribute('href', '/map');
-//   });
-// });
-
+});
 
 export {};
