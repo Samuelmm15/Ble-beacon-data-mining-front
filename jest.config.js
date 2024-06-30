@@ -7,21 +7,14 @@ module.exports = {
   roots: ["./src"],
   testPathIgnorePatterns: ["./src/streamingPlatformIcons"],
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.tsx?$": "babel-jest",
   },
+  transformIgnorePatterns: [
+    "/node_modules/(?!react-leaflet|@react-leaflet|leaflet).+\\.js$",
+  ],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   moduleDirectories: ["node_modules", "src"],
-  moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node",
-    "lcov",
-    "clover",
-    "text",
-  ],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   testRetry: 3,
   moduleNameMapper: {
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
